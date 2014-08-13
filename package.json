@@ -1,0 +1,19 @@
+{
+  "name": "jii-api",
+  "version": "0.1.0",
+  "description": "file staring server",
+  "author": "Hung Tran <oohnoitz@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:oohnoitz/jii.git"
+  },
+  "engines": {
+    "node": ">=0.10.30"
+  },
+  "dependencies": {
+    "jii-api": "git+https://github.com/oohnoitz/jii-api.git",
+    "jii-web": "git+https://github.com/oohnoitz/jii-web.git",
+    "hapi": "^6.4.0"
+  }
+}

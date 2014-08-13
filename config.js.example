@@ -1,0 +1,19 @@
+module.exports = {
+  server: {
+    api: {
+      host: 'localhost',
+      port: 8000,
+      uri: 'http://localhost:8000/'
+    },
+    web: {
+      host: 'localhost',
+      port: 8001,
+      uri: 'http://localhost:8001/'
+    }
+  },
+  database: {
+    host: '127.0.0.1',
+    port: 27017,
+    data: 'jii'
+  }
+}
