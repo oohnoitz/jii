@@ -15,5 +15,10 @@ module.exports = {
     host: '127.0.0.1',
     port: 27017,
     data: 'jii'
+  },
+  clamav: {
+    host: '127.0.0.1',
+    port: 3310,
+    enabled: false
   }
 }
