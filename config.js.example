@@ -3,12 +3,12 @@ module.exports = {
     api: {
       host: 'localhost',
       port: 8000,
-      uri: 'http://localhost:8000/'
+      uri: 'http://localhost:8000'
     },
     web: {
       host: 'localhost',
       port: 8001,
-      uri: 'http://localhost:8001/'
+      uri: 'http://localhost:8001'
     }
   },
   database: {
