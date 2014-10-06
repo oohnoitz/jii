@@ -1,0 +1,24 @@
+{% raw %}
+    <script id="file-template" type="text/x-handlebars-template">
+    {{#each files}}
+        <li class="file-item">
+            <div class="metadata">
+                <span class="filename">{{shortenName name}}</span>
+
+                <span class="btn-remove"><i class="fa fa-remove"></i></span>
+                <span class="btn-download">
+                    <a href="#" target="_blank" class="download-link">
+                        <i class="fa fa-clipboard"></i>
+                    </a>
+                </span>
+                <span class="filesize">{{formatFileSize size}}</span>
+            </div>
+            <div class="progress-wrapper">
+                <div class="progress">
+                   <div class="status" style="width: 0%"></div>
+                </div>
+            </div>
+            </li>
+    {{/each}}
+    </script>
+{% endraw %}

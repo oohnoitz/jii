@@ -1,27 +1,20 @@
 module.exports = {
-  server: {
-    api: {
-      host: 'localhost',
-      port: 8000,
-      uri: 'http://localhost:8000'
+    app: {
+        host: '0.0.0.0',
+        port: 3000,
+        uri: 'http://localhost:3000'
     },
-    web: {
-      host: 'localhost',
-      port: 8001,
-      uri: 'http://localhost:8001'
+    db: {
+        host: '127.0.0.1',
+        port: 27017,
+        data: 'jii'
+    },
+    storage: {
+        maxUploadSize: 52428800
+    },
+    clamav: {
+        host: '127.0.0.1',
+        port: 3310,
+        enabled: false
     }
-  },
-  database: {
-    host: '127.0.0.1',
-    port: 27017,
-    data: 'jii'
-  },
-  clamav: {
-    host: '127.0.0.1',
-    port: 3310,
-    enabled: false
-  },
-  settings: {
-    maxUploadSize: 52428800,
-  }
-}
+};

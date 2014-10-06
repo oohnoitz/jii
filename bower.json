@@ -1,0 +1,17 @@
+{
+  "name": "jii",
+  "version": "0.1.5",
+  "homepage": "https://github.com/oohnoitz/jii",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "font-awesome": "~4.2.0"
+  }
+}
