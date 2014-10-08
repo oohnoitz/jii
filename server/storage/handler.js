@@ -32,19 +32,18 @@ module.exports = {
     insert: function (request, reply) {
         var self = this;
 
-        var fileStream = request.payload['file'];
         var data = {
             _id: guid.generate(),
-            filename: fileStream.hapi.filename,
+            filename: request.payload['file'].hapi.filename,
             mode: 'w',
-            content_type: mime.lookup(fileStream.hapi.filename) || 'application/octet-stream'
+            content_type: mime.lookup(request.payload['file'].hapi.filename) || 'application/octet-stream'
         };
 
-        saveFile(self, data, fileStream).then(function (result) {
-            reply(result);
+        saveFile(self, data, request.payload['file']).then(function (result) {
+            return reply(result);
         }, function (err) {
             self.fs.delete(err.data, function (e, r) {
-                reply({ error: err.error, message: err.message });
+                return reply({ error: err.error, message: err.message });
             });
         });
     }
