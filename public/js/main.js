@@ -3,8 +3,8 @@ $(function () {
 
     //set up our file upload script
     $("#uploader").html5Uploader({
-        url: '/upload',
-        maxFileSize: 1024 * 1024 * 50
+        url: $("#uploader").data("path"),
+        maxFileSize: $("#uploader").data("max-size")
     });
 
     // Load informations about the already uploaded files (We don't use this, but maybe you will need. Check the console.)

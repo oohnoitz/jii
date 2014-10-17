@@ -3,6 +3,7 @@ module.exports = {
         handler: function (request, reply) {
             reply.view('index', {
                 title: 'じーっ',
+                app: require('../../config.js'),
                 jii: require('../../package.json')
             });
         },
