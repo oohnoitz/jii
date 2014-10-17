@@ -23,7 +23,7 @@
     "file-size": "0.0.5",
     "good": "~2.2.3",
     "gridfs-locking-stream": "^0.2.4",
-    "hapi": "~6.7.1",
+    "hapi": "~7.0.0",
     "hapi-assets": "~0.2.1",
     "hapi-cache-buster": "~0.2.0",
     "hapi-named-routes": "~0.2.0",

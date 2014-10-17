@@ -1,18 +1,4 @@
 module.exports = function (server, config) {
-    var mongoose = require('mongoose');
-    var Grid = require('gridfs-locking-stream');
-
-    // MongoDB / GridFS
-    var client = mongoose.createConnection('mongodb://' + config.db.host + ':' + config.db.port + '/' + config.db.data, { server: { auto_reconnect: true }});
-    var gridfs = Grid(client.db, mongoose.mongo);
-    client.on('open', function (err, d) {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('connected to database :: ' + config.db.data);
-        }
-    });
-
     // Options to pass into the 'Good' plugin
     var goodOptions = {
         subscribers: {
@@ -38,14 +24,17 @@ module.exports = function (server, config) {
             plugin: require('hapi-cache-buster')
         },
         {
-            name: 'gridfs-storage',
-            plugin: require('../storage'),
+            name: 'storage',
+            plugin: require('../lib/storage'),
             options: {
-                app: config,
-                db: {
-                    client: client,
-                    gridfs: gridfs
-                }
+                config: config
+            }
+        },
+        {
+            name: 'api-v1',
+            plugin: require('../lib/api/v1'),
+            options: {
+                config: config
             }
         }
     ], function (err) {
