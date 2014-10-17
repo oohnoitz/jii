@@ -6,7 +6,7 @@ var Hapi = require('hapi'),
     config = require('./config');
 
 // Create a server with a host, port, and options
-var server = Hapi.createServer(config.app.host, config.app.port, settings.hapi.options);
+var server = Hapi.createServer(config.app.host, config.app.port);
 
 // Export the server to be required elsewhere.
 module.exports = server;
@@ -18,6 +18,7 @@ require('./server/config/plugins')(server, config);
 var routes = require('./server/config/routes')(server, config);
 // Add the server routes
 server.route(routes);
+server.views(settings.hapi.options.views);
 
 //Start the server
 server.start(function() {
