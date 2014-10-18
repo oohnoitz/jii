@@ -58,6 +58,10 @@ a {
     float: right;
 }
 
+i.fa.fa-clock-o {
+    padding-left: 1px;
+}
+
 .container {
     margin: auto;
     padding: 10px;

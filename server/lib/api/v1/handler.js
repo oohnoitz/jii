@@ -1,6 +1,7 @@
 var clamav = require('clamav.js');
 var guid = require('shortid');
 var mime = require('mime-types');
+var path = require('path');
 var Promise = require('es6-promise').Promise;
 var headers = require('../../../utils/headers');
 
@@ -48,7 +49,7 @@ var saveFile = function (self, data, fileStream) {
             } else {
                 delete file.metadata;
                 delete file.aliases;
-                file.url = self.config.app.uri + '/' + file._id + '.' + mime.extension(file.contentType);
+                file.url = self.config.app.uri + '/' + file._id + path.extname(file.filename);
 
                 if (self.config.clamav.enabled === true) {
                     self.fs.read(file._id, function (e, dataStream) {
