@@ -1,4 +1,4 @@
-exports.generateContentDisposition = function(metadata) {
+exports.generateContentDisposition = function (metadata) {
     var header = (metadata.contentType.substr(0, 'application/'.length) === 'application/')
         ? 'attachment' : 'inline';
     if (metadata.filename) {
@@ -9,4 +9,15 @@ exports.generateContentDisposition = function(metadata) {
     }
 
     return header;
+};
+
+exports.parseContentDisposition = function (string) {
+    var type = null;
+    var filename = /filename="(.*?)"/i.exec(string);
+    if (filename) {
+        filename = decodeURI(filename[1]);
+        type = string.split(';')[0]
+    }
+
+    return { type: type, filename: filename };
 };

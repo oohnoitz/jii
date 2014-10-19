@@ -1,5 +1,6 @@
 var clamav = require('clamav.js');
 var guid = require('shortid');
+var http = require('http');
 var mime = require('mime-types');
 var path = require('path');
 var Promise = require('es6-promise').Promise;
@@ -24,25 +25,49 @@ module.exports = {
     },
     create: function (request, reply) {
         var self = this;
-        var data = {
-            _id: guid.generate(),
-            filename: request.payload['file'].hapi.filename,
-            mode: 'w',
-            content_type: mime.lookup(request.payload['file'].hapi.filename) || 'application/octet-stream'
-        };
 
-        saveFile(self, data, request.payload['file']).then(function (result) {
-            return reply(result);
-        }, function (err) {
-            self.fs.delete(err.data, function (e, r) {
-                return reply({ error: err.error, message: err.message });
+        if (!request.payload['file'] && !request.payload['link']) {
+            return reply({ 'statusCode': 400, 'error': 'Bad Request' });
+        }
+
+        if (request.payload['file']) {
+            var data = parseReq('file', request, null);
+            return saveFile(self, data, request.payload['file'], reply);
+        }
+
+        if (request.payload['link']) {
+            http.get(request.payload['link'], function (file) {
+                var data = parseReq('link', request, file);
+                return saveFile(self, data, file, reply);
+            }).on('error', function (err) {
+                return reply({ error: 'Connection Failed', message: 'Unable to retrieve remote file.' });
             });
-        });
+        }
     }
 };
 
-var saveFile = function (self, data, fileStream) {
-    return new Promise(function (resolve, reject) {
+var parseReq = function (type, req, res) {
+    switch (type) {
+        case 'file':
+            return {
+                _id: guid.generate(),
+                filename: req.payload['filename'] || req.payload['file'].hapi.filename,
+                content_type: mime.lookup(req.payload['file'].hapi.filename) || 'application/octet-stream'
+            };
+        case 'link':
+            return {
+                _id: guid.generate(),
+                filename: req.payload['filename'] || headers.parseContentDisposition(res.headers['content-disposition']).filename || path.basename(req.payload['link']),
+                mode: 'w',
+                content_type: res.headers['content-type'].split(';')[0] || mime.lookup(req.payload['link']) || 'application/octet-stream'
+            };
+        default:
+            return {};
+    }
+}
+
+var saveFile = function (self, data, fileStream, reply) {
+    var save = new Promise(function (resolve, reject) {
         self.fs.save(data, fileStream, function (err, file) {
             if (err) {
                 reject({ data: data, error: 'Storage Error', message: err });
@@ -65,6 +90,14 @@ var saveFile = function (self, data, fileStream) {
                     resolve(file);
                 }
             }
+        });
+    });
+
+    save.then(function (result) {
+        return reply(result);
+    }, function (error) {
+        self.fs.delete(error.data, function (err, res) {
+            return reply({ error: error.error, message: error.message });
         });
     });
 };
