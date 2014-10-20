@@ -1,3 +1,7 @@
+var bcrypt = require('bcrypt');
+var crypto = require('crypto');
+var cryptostream = require('cryptostream');
+var passStream = require('pass-stream');
 var mongoose = require('mongoose');
 var Grid = require('gridfs-locking-stream');
 
@@ -14,14 +18,14 @@ module.exports = function (config) {
         }
     });
 
-    fs.delete = function (metadata, cb) {
+    fs.delete = function (file, cb) {
         var self = this;
-        self._gridfs.remove(metadata, function (err, res) {
+        self._gridfs.remove(file, function (err, res) {
             if (err || res == null) {
-                return cb(null);
+                return cb(true);
             }
 
-            return cb(res);
+            return cb(null, res);
         });
     };
 
@@ -29,10 +33,10 @@ module.exports = function (config) {
         var self = this;
         self._gridfs.files.findOne({ _id: guid }, function (err, res) {
             if (err || res === null) {
-                return cb(null);
+                return cb(true);
             }
 
-            return cb(res);
+            return cb(null, res);
         });
     };
 
@@ -47,21 +51,37 @@ module.exports = function (config) {
         });
     };
 
-    fs.save = function (metadata, readStream, cb) {
+    fs.save = function (file, readStream, cb) {
         var self = this;
-        self._gridfs.createWriteStream(metadata, function (err, writeStream) { 
-            writeStream.on('error', function (err) {
-                return cb(err);
-            });
 
-            writeStream.on('close', function (data) {
-                return cb(null, data);
-            });
+        if (file.metadata.secure && (!file.crypto.algorithm || !file.crypto.key)) {
+            return cb('You did not provide a valid crypto algorithm and/or key.');
+        }
 
-            readStream.pipe(writeStream);
+        var encryptStream = passStream();
+        if (file.metadata.secure && file.crypto.algorithm && file.crypto.key) {
+            if (crypto.getCiphers().indexOf(file.crypto.algorithm) === -1) {
+                return cb('You must use one of the following crypto algorithms: ' + crypto.getCiphers().toString().toUpperCase() + '.');
+            }
+
+            encryptStream = new cryptostream.EncryptStream({ algorithm: file.crypto.algorithm, key: file.crypto.key });
+        }
+
+        bcrypt.hash(file.deleteHash, 8, function (err, hash) {
+            file.metadata.deleteHash = hash;
+            self._gridfs.createWriteStream(file, function (err, writeStream) {
+                writeStream.on('error', function (err) {
+                    return cb(err);
+                });
+
+                writeStream.on('close', function (data) {
+                    return cb(null, data);
+                });
+
+                readStream.pipe(encryptStream).pipe(writeStream);
+            });
         });
     };
 
     return fs;
 };
-

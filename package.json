@@ -17,8 +17,10 @@
     "postinstall": "bower install"
   },
   "dependencies": {
+    "bcrypt": "^0.8.0",
     "bower": "~1.3.9",
     "clamav.js": "^0.10.0",
+    "cryptostream": "philips/node-cryptostream",
     "es6-promise": "^1.0.0",
     "file-size": "0.0.5",
     "good": "~2.2.3",
@@ -29,6 +31,8 @@
     "hapi-named-routes": "~0.2.0",
     "mime-types": "^2.0.2",
     "mongoose": "^3.8.17",
+    "pass-stream": "^0.1.3",
+    "random-key": "^0.2.1",
     "require-directory": "~2.0.0",
     "shortid": "^2.0.1",
     "swig": "~1.4.2"

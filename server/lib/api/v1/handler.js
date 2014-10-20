@@ -1,8 +1,10 @@
+var bcrypt = require('bcrypt');
 var clamav = require('clamav.js');
 var guid = require('shortid');
 var http = require('http');
 var mime = require('mime-types');
 var path = require('path');
+var rand = require('random-key');
 var Promise = require('es6-promise').Promise;
 var headers = require('../../../utils/headers');
 
@@ -11,16 +13,16 @@ module.exports = {
         var self = this;
         var guid = request.params.guid ? request.params.guid.split('.')[0] : null;
 
-        self.fs.find(guid, function (metadata) {
-            if (metadata === null) {
+        self.fs.find(guid, function (err, file) {
+            if (err || file === null) {
                 return reply({ 'statusCode': 404, 'error': 'Not Found' })
                     .code(404);
             }
 
-            delete metadata.metadata;
-            delete metadata.aliases;
+            delete file.metadata;
+            delete file.aliases;
 
-            return reply(metadata);
+            return reply(file);
         });
     },
     create: function (request, reply) {
@@ -43,27 +45,62 @@ module.exports = {
                 return reply({ error: 'Connection Failed', message: 'Unable to retrieve remote file.' });
             });
         }
+    },
+    remove: function (request, reply) {
+        var self = this;
+        var guid = request.params.guid ? request.params.guid.split('.')[0] : null;
+        var hash = request.params.hash || null;
+
+        self.fs.find(guid, function (err, file) {
+            if (err || file === null) {
+                return reply({ 'statusCode': 404, 'error': 'Not Found' })
+                    .code(404);
+            }
+
+            bcrypt.compare(hash, file.metadata.deleteHash, function (err, res) {
+                if (res) {
+                    self.fs.delete(file, function (err, res) {
+                        return reply({ 'statusCode': 200, 'message': 'The file has been deleted.' });
+                    });
+                } else {
+                    return reply({ 'statusCode': 401, 'error': 'Invalid Deletion Hash.' })
+                        .code(401);
+                }
+            });
+        });
     }
 };
 
 var parseReq = function (type, req, res) {
+    var file = {
+        _id: guid.generate(),
+        filename: rand.generate(),
+        mode: 'w',
+        content_type: 'application/octet-stream',
+        deleteHash: req.payload['delete-hash'] || rand.generate(),
+        crypto: {
+            algorithm: req.payload['crypto-algorithm'] || null,
+            key: req.payload['crypto-key'] || null
+        },
+        metadata: {
+            secure: Boolean(parseInt(req.payload['secure']))
+        }
+    }
+
     switch (type) {
         case 'file':
-            return {
-                _id: guid.generate(),
-                filename: req.payload['filename'] || req.payload['file'].hapi.filename,
-                content_type: mime.lookup(req.payload['file'].hapi.filename) || 'application/octet-stream'
-            };
+            file.filename = req.payload['filename'] || req.payload['file'].hapi.filename;
+            file.content_type = mime.lookup(req.payload['file'].hapi.filename) || 'application/octet-stream';
+            break;
         case 'link':
-            return {
-                _id: guid.generate(),
-                filename: req.payload['filename'] || headers.parseContentDisposition(res.headers['content-disposition']).filename || path.basename(req.payload['link']),
-                mode: 'w',
-                content_type: res.headers['content-type'].split(';')[0] || mime.lookup(req.payload['link']) || 'application/octet-stream'
-            };
+            file.filename = req.payload['filename'] || headers.parseContentDisposition(res.headers['content-disposition']).filename || path.basename(req.payload['link']);
+            file.content_type = res.headers['content-type'].split(';')[0] || mime.lookup(req.payload['link']) || 'application/octet-stream';
+            break;
         default:
             return {};
     }
+
+    return file;
 }
 
 var saveFile = function (self, data, fileStream, reply) {
@@ -72,9 +109,9 @@ var saveFile = function (self, data, fileStream, reply) {
             if (err) {
                 reject({ data: data, error: 'Storage Error', message: err });
             } else {
-                delete file.metadata;
                 delete file.aliases;
-                file.url = self.config.app.uri + '/' + file._id + path.extname(file.filename);
+                file.metadata.deleteHash = data.deleteHash;
+                file.url = self.config.app.uri + (file.metadata.secure ? '/secure/' : '/') + file._id + path.extname(file.filename);
 
                 if (self.config.clamav.enabled === true) {
                     self.fs.read(file._id, function (e, dataStream) {

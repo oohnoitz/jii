@@ -9,6 +9,12 @@ exports.register = function(plugin, options, next) {
 
     plugin.route({
         method: 'GET',
+        path: '/secure/{guid}/{algorithm}/{key}',
+        handler: require('./handler').select
+    });
+
+    plugin.route({
+        method: 'GET',
         path: '/{guid*}',
         handler: require('./handler').select
     });

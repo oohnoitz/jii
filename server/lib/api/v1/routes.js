@@ -1,6 +1,11 @@
 module.exports = function (config) {
     var routes = [
         {
+            method: 'DELETE',
+            path: '/api/v1/upload/{guid}/{hash}',
+            handler: require('./handler').remove
+        },
+        {
             method: 'POST',
             path: '/api/v1/upload',
             config: {
