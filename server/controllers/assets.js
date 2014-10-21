@@ -1,7 +1,7 @@
 module.exports = {
     images: {
         handler: {
-            directory: { path: './public/images' }
+            directory: { path: './public/assets/images' }
         },
         app: {
             name: 'images'
@@ -9,7 +9,7 @@ module.exports = {
     },
     css: {
         handler: {
-            directory: { path: './public/css' }
+            directory: { path: './public/assets/css' }
         },
         app: {
             name: 'css'
@@ -17,7 +17,7 @@ module.exports = {
     },
     js: {
         handler: {
-            directory: { path: './public/js' }
+            directory: { path: './public/assets/js' }
         },
         app: {
             name: 'js'
@@ -25,7 +25,7 @@ module.exports = {
     },
     bower: {
         handler: {
-            directory: { path: './public/bower_components' }
+            directory: { path: './public/assets/bower' }
         },
         app: {
             name: 'bower'

@@ -12,7 +12,7 @@ var gulp = require('gulp'),
 var assets = require('./assets');
 
 // change the working directory to the public folder, where your assets are located.
-var gulpFileCwd = __dirname +'/public';
+var gulpFileCwd = __dirname +'/public/assets';
 process.chdir(gulpFileCwd);
 // print the working directory
 util.log('Working directory changed to', util.colors.magenta(gulpFileCwd));

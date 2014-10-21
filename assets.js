@@ -11,11 +11,19 @@ module.exports = {
             'js/HTML5Uploader.js',
             'js/main.js'
         ],
-        css: ['css/theme.css'],
-        bower: ['bower/font-awesome/css/font-awesome.min.css']
+        css: [
+            'css/theme.css'
+        ],
+        bower: [
+            'bower/font-awesome/css/font-awesome.min.css'
+        ]
     },
     production: {
-        js: ['js/main.js'],
-        css: ['css/styles.css']
+        js: [
+            'js/core.js'
+        ],
+        css: [
+            'css/style.css'
+        ]
     }
 }
