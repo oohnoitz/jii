@@ -3,12 +3,11 @@
 */
 var requireDirectory = require('require-directory');
 
-module.exports = function (server, config) {
-    // Bootstrap your controllers so you dont have to load them individually. This loads them all into the controller name space. https://github.com/troygoode/node-require-directory
+module.exports = function (config) {
     var controller = requireDirectory(module, '../controllers');
 
     // Array of routes for Hapi
-    var routeTable = [
+    return [
         {
             method: 'GET',
             path: '/',
@@ -35,5 +34,4 @@ module.exports = function (server, config) {
             config: controller.assets.bower
         }
     ];
-    return routeTable;
-}
+};

@@ -1,38 +1,32 @@
 module.exports = function (server, config) {
-    // Options to pass into the 'Good' plugin
-    var goodOptions = {
-        subscribers: {
-            console: ['ops', 'request', 'log', 'error']
+    var options = {
+        assets: require('../../assets'),
+        good: {
+            reporters: [{
+                reporter: require('good-console'),
+                args: [{ ops: '*', log: '*', response: '*', error: '*' }]
+            }]
         }
     };
-    // The Assets Configuaration Options
-    var assetOptions = require('../../assets');
 
-    server.pack.register([
+    // Register Plugins
+    server.register([
         {
-            plugin: require('good'),
-            options: goodOptions
+            register: require('good'),
+            options: options.good
         },
         {
-            plugin: require('hapi-assets'),
-            options: assetOptions
+            register: require('hapi-assets'),
+            options: options.assets
         },
         {
-            plugin: require('hapi-named-routes')
-        },
-        {
-            plugin: require('hapi-cache-buster')
-        },
-        {
-            name: 'storage',
-            plugin: require('../lib/storage'),
+            register: require('../lib/storage'),
             options: {
                 config: config
             }
         },
         {
-            name: 'api-v1',
-            plugin: require('../lib/api/v1'),
+            register: require('../lib/api/v1'),
             options: {
                 config: config
             }

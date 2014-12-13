@@ -1,5 +1,5 @@
 module.exports = function (config) {
-    var routes = [
+    return [
         {
             method: 'DELETE',
             path: '/api/v1/upload/{guid}/{hash}',
@@ -14,9 +14,6 @@ module.exports = function (config) {
                     maxBytes: config.storage.maxUploadSize,
                     output: 'stream',
                     parse: true
-                },
-                app: {
-                    name: 'create'
                 }
             }
         },
@@ -26,6 +23,4 @@ module.exports = function (config) {
             handler: require('./handler').select
         }
     ];
-
-    return routes;
-}
+};

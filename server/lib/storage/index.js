@@ -21,3 +21,8 @@ exports.register = function(plugin, options, next) {
 
     next();
 };
+
+exports.register.attributes = {
+    name: 'storage',
+    version: '0.1.0'
+};

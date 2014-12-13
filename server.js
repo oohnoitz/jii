@@ -6,21 +6,23 @@ var Hapi = require('hapi'),
     config = require('./config');
 
 // Create a server with a host, port, and options
-var server = Hapi.createServer(config.app.host, config.app.port);
+var server = new Hapi.Server();
+server.connection({ host: config.app.host, port: config.app.port});
 
 // Export the server to be required elsewhere.
 module.exports = server;
 
-// Bootstrap Hapi Server Plugins, passes the server object to the plugins
+// Bootstrap Server Plugins, passes the server object to the plugins
 require('./server/config/plugins')(server, config);
 
 // Require the routes and pass the server object.
-var routes = require('./server/config/routes')(server, config);
-// Add the server routes
+var routes = require('./server/config/routes')(config);
 server.route(routes);
+
+// Setup Views
 server.views(settings.hapi.options.views);
 
-//Start the server
+//Start Server
 server.start(function() {
     //Log to the console the host and port info
     console.log('Server started at: ' + server.info.uri);

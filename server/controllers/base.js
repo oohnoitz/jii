@@ -6,9 +6,6 @@ module.exports = {
                 app: require('../../config.js'),
                 jii: require('../../package.json')
             });
-        },
-        app: {
-            name: 'index'
         }
     }
-}
+};

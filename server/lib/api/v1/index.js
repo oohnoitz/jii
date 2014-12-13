@@ -9,3 +9,8 @@ exports.register = function (plugin, options, next) {
 
     return next();
 };
+
+exports.register.attributes = {
+    name: 'api',
+    version: '1.0.0'
+};

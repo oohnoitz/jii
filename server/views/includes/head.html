@@ -1,8 +1,8 @@
 {% block head %}
     {% for item in assets.css %}
-        <link rel="stylesheet" href="/assets/{{item}}{{version.cache}}"/>
+        <link rel="stylesheet" href="/assets/{{item}}"/>
     {% endfor %}
     {% for item in assets.bower %}
-        <link rel="stylesheet" href="/assets/{{item}}{{version.cache}}"/>
+        <link rel="stylesheet" href="/assets/{{item}}"/>
     {% endfor %}
 {% endblock %}
