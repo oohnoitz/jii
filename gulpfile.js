@@ -22,13 +22,13 @@ gulp.task('default', function(){
 
     // concat and minify your css
     gulp.src(assets.development.css)
-        .pipe(concat('styles.css'))
+        .pipe(concat('style.css'))
         .pipe(minifycss())
         .pipe(gulp.dest('./css/'));
 
     // concat and minify your js
     gulp.src(assets.development.js)
-        .pipe(concat('scripts.js'))
+        .pipe(concat('core.js'))
         .pipe(uglify())
         .pipe(gulp.dest('./js/'));
 
