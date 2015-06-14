@@ -4,7 +4,10 @@ module.exports = function (server, config) {
         good: {
             reporters: [{
                 reporter: require('good-console'),
-                args: [{ ops: '*', log: '*', response: '*', error: '*' }]
+                events: {
+                    response: '*',
+                    log: '*'
+                }
             }]
         }
     };

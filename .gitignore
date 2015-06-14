@@ -1,3 +1,4 @@
+!.gitkeep
 lib-cov
 *.seed
 *.log
@@ -7,6 +8,7 @@ lib-cov
 *.pid
 *.gz
 
+public/assets/bower/*
 tmp
 pids
 results
