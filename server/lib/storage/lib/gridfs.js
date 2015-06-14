@@ -2,8 +2,12 @@ var bcrypt = require('bcrypt');
 var crypto = require('crypto');
 var cryptostream = require('cryptostream');
 var passStream = require('pass-stream');
+var mime = require('mime-types');
 var mongoose = require('mongoose');
 var Grid = require('gridfs-locking-stream');
+var Gifsicle = require('gifsicle-stream');
+var JpegTran = require('jpegtran');
+var OptiPng = require('optipng');
 
 module.exports = function (config) {
     var fs = {};
@@ -21,7 +25,7 @@ module.exports = function (config) {
     fs.delete = function (file, cb) {
         var self = this;
         self._gridfs.remove(file, function (err, res) {
-            if (err || res == null) {
+            if (err || res === null) {
                 return cb(true);
             }
 
@@ -58,6 +62,19 @@ module.exports = function (config) {
             return cb('You did not provide a valid crypto algorithm and/or key.');
         }
 
+        var imageProcessingStream = passStream();
+        switch (mime.extension(file.content_type)) {
+            case 'gif':
+                imageProcessingStream = new Gifsicle(['-w', '-O3']);
+                break;
+            case 'jpeg':
+                imageProcessingStream = new JpegTran(['-copy', 'all', '-optimize', '-progressive']);
+                break;
+            case 'png':
+                imageProcessingStream = new OptiPng();
+                break;
+        }
+
         var encryptStream = passStream();
         if (file.metadata.secure && file.crypto.algorithm && file.crypto.key) {
             if (crypto.getCiphers().indexOf(file.crypto.algorithm) === -1) {
@@ -78,7 +95,7 @@ module.exports = function (config) {
                     return cb(null, data);
                 });
 
-                readStream.pipe(encryptStream).pipe(writeStream);
+                readStream.pipe(imageProcessingStream).pipe(encryptStream).pipe(writeStream);
             });
         });
     };
