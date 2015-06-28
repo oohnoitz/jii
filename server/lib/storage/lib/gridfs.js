@@ -114,7 +114,6 @@ module.exports = function (config) {
                     dataStream.pipe(imageProcessingStream).pipe(encryptStream).pipe(writeStream);
                 });
             });
-
         });
     };
 

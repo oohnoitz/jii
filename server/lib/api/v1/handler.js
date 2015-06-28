@@ -99,7 +99,7 @@ var parseReq = function (type, req, res) {
     }
 
     return file;
-}
+};
 
 var saveFile = function (self, data, fileStream, reply) {
     var save = new Promise(function (resolve, reject) {
@@ -112,14 +112,24 @@ var saveFile = function (self, data, fileStream, reply) {
                 file.url = self.config.app.uri + (file.metadata.secure ? '/s/' : '/') + file._id + path.extname(file.filename);
 
                 if (self.config.clamav.enabled === true) {
-                    self.fs.read(file._id, function (e, dataStream) {
-                        clamav.createScanner(self.config.clamav.port, self.config.clamav.host).scan(dataStream, function (err, obj, mal) {
-                            if (mal) {
-                                reject({ data : data, error: 'Virus Signature Detected', message: 'This file contains a virus signature. (' + mal + ')' });
-                            } else {
-                                resolve(file);
-                            }
-                        });
+                    self.fs.read(file._id, function (err, dataStream) {
+                        if (err) {
+                            console.warn('Unable to scan the file.id: ' + file._id);
+                            resolve(file);
+                        } else {
+                            clamav.createScanner(self.config.clamav.port, self.config.clamav.host)
+                                .scan(dataStream, function (err, obj, malware) {
+                                    if (malware) {
+                                        reject({
+                                            data : data,
+                                            error: 'Virus Signature Detected',
+                                            message: 'This file contains a virus signature. (' + malware + ')'
+                                        });
+                                    } else {
+                                        resolve(file);
+                                    }
+                                });
+                        }
                     });
                 } else {
                     resolve(file);
