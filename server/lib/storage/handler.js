@@ -30,6 +30,7 @@ module.exports = {
 
                 return reply(data.pipe(decryptStream))
                     .header('Content-Disposition', headers.generateContentDisposition(file))
+                    .header('Content-Length', file.length)
                     .header('Content-Type', (file.contentType || 'application/octet-stream'))
                     .header('ETag', file.md5)
                     .header('Last-Modified', file.uploadDate.toUTCString());
