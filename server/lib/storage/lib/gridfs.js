@@ -67,6 +67,13 @@ module.exports = function (config) {
                 return cb(err);
             }
 
+            // set default mime values when libmagic fails
+            if (mime === null) {
+                mime = {
+                    type: 'application/octet-stream'
+                };
+            }
+
             // image post-processing optimizations
             var imageProcessingStream = passStream();
             switch (mime.type) {
