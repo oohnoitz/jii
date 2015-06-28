@@ -90,11 +90,9 @@ var parseReq = function (type, req, res) {
     switch (type) {
         case 'file':
             file.filename = req.payload['filename'] || req.payload['file'].hapi.filename;
-            file.content_type = mime.lookup(req.payload['file'].hapi.filename) || 'application/octet-stream';
             break;
         case 'link':
             file.filename = req.payload['filename'] || headers.parseContentDisposition(res.headers['content-disposition']).filename || path.basename(req.payload['link']);
-            file.content_type = res.headers['content-type'].split(';')[0] || mime.lookup(req.payload['link']) || 'application/octet-stream';
             break;
         default:
             return {};

@@ -1,8 +1,8 @@
 var bcrypt = require('bcrypt');
 var crypto = require('crypto');
 var cryptostream = require('cryptostream');
+var detectMime = require('stream-mmmagic');
 var passStream = require('pass-stream');
-var mime = require('mime-types');
 var mongoose = require('mongoose');
 var Grid = require('gridfs-locking-stream');
 var Gifsicle = require('gifsicle-stream');
@@ -62,41 +62,52 @@ module.exports = function (config) {
             return cb('You did not provide a valid crypto algorithm and/or key.');
         }
 
-        var imageProcessingStream = passStream();
-        switch (mime.extension(file.content_type)) {
-            case 'gif':
-                imageProcessingStream = new Gifsicle(['-w', '-O3']);
-                break;
-            case 'jpeg':
-                imageProcessingStream = new JpegTran(['-copy', 'all', '-optimize', '-progressive']);
-                break;
-            case 'png':
-                imageProcessingStream = new OptiPng();
-                break;
-        }
-
-        var encryptStream = passStream();
-        if (file.metadata.secure && file.crypto.algorithm && file.crypto.key) {
-            if (crypto.getCiphers().indexOf(file.crypto.algorithm) === -1) {
-                return cb('You must use one of the following crypto algorithms: ' + crypto.getCiphers().toString().toUpperCase() + '.');
+        detectMime(readStream, function (err, mime, dataStream) {
+            if (err) {
+                return cb(err);
             }
 
-            encryptStream = new cryptostream.EncryptStream({ algorithm: file.crypto.algorithm, key: file.crypto.key });
-        }
+            // image post-processing optimizations
+            var imageProcessingStream = passStream();
+            switch (mime.type) {
+                case 'image/gif':
+                    imageProcessingStream = new Gifsicle(['-w', '-O3']);
+                    break;
+                case 'image/jpeg':
+                    imageProcessingStream = new JpegTran(['-copy', 'all', '-optimize', '-progressive']);
+                    break;
+                case 'image/png':
+                    imageProcessingStream = new OptiPng();
+                    break;
+            }
 
-        bcrypt.hash(file.deleteHash, 8, function (err, hash) {
-            file.metadata.deleteHash = hash;
-            self._gridfs.createWriteStream(file, function (err, writeStream) {
-                writeStream.on('error', function (err) {
-                    return cb(err);
+            // file encryption
+            var encryptStream = passStream();
+            if (file.metadata.secure && file.crypto.algorithm && file.crypto.key) {
+                if (crypto.getCiphers().indexOf(file.crypto.algorithm) === -1) {
+                    return cb('You must use one of the following crypto algorithms: ' + crypto.getCiphers().toString().toUpperCase() + '.');
+                }
+
+                encryptStream = new cryptostream.EncryptStream({ algorithm: file.crypto.algorithm, key: file.crypto.key });
+            }
+
+            // store file
+            bcrypt.hash(file.deleteHash, 8, function (err, hash) {
+                file.content_type = mime.type;
+                file.metadata.deleteHash = hash;
+                self._gridfs.createWriteStream(file, function (err, writeStream) {
+                    writeStream.on('error', function (err) {
+                        return cb(err);
+                    });
+
+                    writeStream.on('close', function (data) {
+                        return cb(null, data);
+                    });
+
+                    dataStream.pipe(imageProcessingStream).pipe(encryptStream).pipe(writeStream);
                 });
-
-                writeStream.on('close', function (data) {
-                    return cb(null, data);
-                });
-
-                readStream.pipe(imageProcessingStream).pipe(encryptStream).pipe(writeStream);
             });
+
         });
     };
 

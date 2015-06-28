@@ -37,6 +37,7 @@
     "random-key": "^0.3.2",
     "require-directory": "^2.1.1",
     "shortid": "^2.2.2",
+    "stream-mmmagic": "^0.3.0",
     "swig": "^1.4.2"
   },
   "devDependencies": {
