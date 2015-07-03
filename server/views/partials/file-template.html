@@ -1,0 +1,29 @@
+{% raw %}
+    <script id="file-template" type="text/x-handlebars-template">
+    {{#each files}}
+        <div class="row file-item">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title grey-text text-darken-4 truncate">{{shortenName name}}</span>
+                    <p class="card-size">({{formatFileSize size}})</p>
+                </div>
+                <div class="card-action">
+                    <div class="progress" style="display: none">
+                        <div class="determinate" style="width: 0%"></div>
+                    </div>
+                    <div class="result">
+                        <span class="file-remove">
+                            <i class="material-icons">clear</i>
+                        </span>
+                        <span class="file-download">
+                            <a href="#" class="download-link" target="_blank">
+                                <i class="material-icons">file_download</i>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{/each}}
+    </script>
+{% endraw %}

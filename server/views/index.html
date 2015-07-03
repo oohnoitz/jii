@@ -3,30 +3,27 @@
 {% block title %}{{title}}{% endblock %}
 
 {% block content %}
-    <div class="main">
-        <form id="uploader" action="/api/v1/upload" data-path="/api/v1/upload" data-max-size="{{app.storage.maxUploadSize}}" method="POST" enctype="multipart/form-data">
-            <div class="header">
-                <h1>じーっ</h1>
-                <p>I'm waiting for you to share some files.</p>
-                <div class="version"><a href="{{jii.repository.url}}">jii {{jii.version}}</a></div>
+    <main>
+        <div class="parallax-container" id="index-banner">
+            <div class="parallax">
+                <img src="/assets/images/header.png">
             </div>
+        </div>
+
+        <form id="uploader" action="/api/v1/upload" data-path="/api/v1/upload" data-max-size="{{app.storage.maxUploadSize}}" method="POST" enctype="multipart/form-data">
             <div class="container">
-                <div class="menu">
-                    <button id="upload-btn" class="btn color-pink"><i class="fa fa-cloud-upload"></i> Upload</button>
-                    <div id="browse-btn" class="browse-file-btn btn color-gray">
-                        <i class="fa fa-folder-open-o"></i> Browse
-                        <input type="file" id="browse-file-btn" name="file" multiple="">
+                <div class="row">
+                    <div id="browse-button" class="waves-effect waves-light btn-large">
+                        Browse
+                        <input type="file" id="browse-file-button" name="file" multiple="">
                     </div>
-                    <div class="menu-time"><i class="fa fa-clock-o"></i> <span>00:00:00</span></div>
-                    <div class="menu-eth0"><i class="fa fa-exchange"></i> <span>0 KB/s</span></div>
+                    <button id="upload-button" class="waves-effect waves-light btn-large">
+                        Upload
+                    </button>
                 </div>
-                <div class="data">
-                    <ul id="files"></ul>
-                </div>
+                <div class="data" id="files"></div>
             </div>
         </form>
-        {% include './partials/upload.html' %}
-    </div>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+        {% include './partials/file-template.html' %}
+    </main>
 {% endblock %}

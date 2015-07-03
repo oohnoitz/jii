@@ -11,11 +11,11 @@ module.exports = {
             'js/HTML5Uploader.js',
             'js/main.js'
         ],
-        css: [
-            'css/theme.css'
-        ],
         bower: [
-            'bower/font-awesome/css/font-awesome.min.css'
+            'bower/materialize/dist/css/materialize.min.css'
+        ],
+        css: [
+            'css/main.css'
         ]
     },
     production: {
@@ -26,4 +26,4 @@ module.exports = {
             'css/style.css'
         ]
     }
-}
+};

@@ -1,4 +1,12 @@
 {% block foot %}
+    <footer class="page-footer">
+        <div class="footer-copyright">
+            <div class="container">
+                <a class="grey-text text-lighten-4 right" href="{{jii.repository.url}}">jii {{jii.version}}</a>
+            </div>
+        </div>
+    </footer>
+    <script src="/assets/bower/jquery/dist/jquery.min.js"></script>
     {% for item in assets.js %}
         <script src="/assets/{{item}}"></script>
     {% endfor %}

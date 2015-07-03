@@ -74,13 +74,13 @@
                     that = $this.data('filkor-html5Uploader'),
                     options = that.options,
                     files = data.files,
-                    addmore = $("#browse-file-btn"),
+                    addmore = $("#browse-file-button"),
                     existingFiles = options.existingFiles || [];
-                
+
                 data.process(function () {
                     return $this.html5Uploader('process', data);
                 }).always(function () {
-                    $(".container-info").fadeIn('fast'); 
+                    $(".container-info").fadeIn('fast');
                     addmore.removeClass('hidden');
 
                     //data.context is represents a single li.file-item (if fact, it's attached as an object to it's 'data' attribute)
@@ -104,24 +104,19 @@
             // Callback for the start of each file upload request:
             send: function (e, data) {
                 var that = $(this).data('filkor-html5Uploader');
-                data.context.find('.resumed-upload-note').fadeOut(); 
+                data.context.find('.resumed-upload-note').fadeOut();
 
                 if (data.context && data.dataType &&
                         data.dataType.substr(0, 6) === 'iframe') {
                     // Iframe Transport does not support progress events.
-                    // In lack of an indeterminate progress bar, we 
+                    // In lack of an indeterminate progress bar, we
                     // showing the full animated bar:
                     // Bit hacky.
                    if (!$.support.transition) {
                         data.context
                             .find('.progress').hide()
-                            .find('.status')
-                            .css('width','100%');
-
-                        data.context
-                            .find('.progress-wrap')
-                            .append('<img src="/assets/images/progress-static.gif" class="progress-static">')
-                            .css('height','7px');
+                            .find('.determinate')
+                            .css('width', '100%');
                    }
                 }
                 return that._trigger('sent', e, data);
@@ -133,25 +128,22 @@
                 getFilesFromResponse = data.getFilesFromResponse ||
                     that.options.getFilesFromResponse,
                 files = getFilesFromResponse(data),
-                progressbar = data.context.find('.progress .status'),
+                progressbar = data.context.find('.progress .determinate'),
                 file = files || {error: 'Empty file upload result'};
 
                 //could have used _transition, but its buggy for some reason..
                 data.context
-                    .find('.btn-remove').hide();
+                    .find('.file-remove').hide();
 
                 data.context
-                    .find('.btn-download').fadeIn('fast');
+                    .find('.file-download').fadeIn('fast');
 
                 data.context
                     .find('.download-link').attr('href', file.url).show();
 
                 if (!$.support.transition) {
-                    //hide the 'static' progress animation
                     data.context
-                        .find('.progress-static').hide();
-                    data.context
-                        .find('.progress').show();
+                        .find('.progress').hide();
                 }
             },
 
@@ -169,11 +161,14 @@
                 if (data.context) {
                     var progress = Math.floor(data.loaded / data.total * 100);
                     data.context.find('.progress')
+                        .show()
                         .attr('aria-valuenow', progress)
-                        .find('.status').css(
+                        .find('.determinate').css(
                             'width',
                             progress + '%'
                         );
+
+                    data.context.find('.file-remove').hide();
                 }
             },
 
@@ -198,7 +193,7 @@
 
             destroy: function (e, data) {
                 //destroy file.
-                //By default when you click on the cancel btn you only abort the jqXHR, it doesn't deletes the file 
+                //By default when you click on the cancel btn you only abort the jqXHR, it doesn't deletes the file
                 //(If you want to deletion  you can implement it here)
             },
 
@@ -329,7 +324,7 @@
                 console.log("Current Context");
                 console.log("====================");
                 console.log(this);
-                 
+
                 if (optionalValue) {
                     console.log("Value");
                     console.log("====================");
@@ -375,11 +370,11 @@
             var template = $(e.currentTarget).closest('.file-item'),
                 data = template.data('data') || {},
                 that = this;
-                
+
             template.slideUp('fast', function () {
                 if (data.jqXHR) {
                     data.jqXHR.abort();
-                    
+
                     //we may also delete the file, even when it's partially uploaded
                     //that._trigger('destroy', e, data);
                 }
@@ -390,13 +385,13 @@
         },
 
         _initEventHandlers: function () {
-            var uploadBtn = $("#upload-btn");
+            var uploadBtn = $("#upload-button");
             this._super();
 
             this._on(uploadBtn, {'click' : this._startHandler});
 
             this._on(this.options.filesContainer, {
-                'click .btn-remove': this._cancelHandler
+                'click .file-remove': this._cancelHandler
             });
         },
 

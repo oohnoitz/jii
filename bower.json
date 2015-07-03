@@ -12,6 +12,7 @@
     "tests"
   ],
   "dependencies": {
-    "font-awesome": "~4.2.0"
+    "materialize": "~0.97.0",
+    "jquery": "~2.1.4"
   }
 }
