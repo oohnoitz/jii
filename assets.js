@@ -2,6 +2,7 @@
 module.exports = {
     development: {
         js: [
+            'bower/materialize/dist/js/materialize.min.js',
             'js/handlebars.min.js',
             'js/jquery.ui.widget.js',
             'js/jquery.iframe-transport.js',
@@ -11,10 +12,8 @@ module.exports = {
             'js/HTML5Uploader.js',
             'js/main.js'
         ],
-        bower: [
-            'bower/materialize/dist/css/materialize.min.css'
-        ],
         css: [
+            'bower/materialize/dist/css/materialize.min.css',
             'css/main.css'
         ]
     },
