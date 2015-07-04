@@ -21,6 +21,7 @@ module.exports = function (config) {
             console.log('connected to database :: ' + config.db.data);
         }
     });
+    fs._storageConfig = config.storage;
 
     fs.delete = function (file, cb) {
         var self = this;
@@ -76,16 +77,18 @@ module.exports = function (config) {
 
             // image post-processing optimizations
             var imageProcessingStream = passStream();
-            switch (mime.type) {
-                case 'image/gif':
-                    imageProcessingStream = new Gifsicle(['-w', '-O3']);
-                    break;
-                case 'image/jpeg':
-                    imageProcessingStream = new JpegTran(['-copy', 'all', '-optimize', '-progressive']);
-                    break;
-                case 'image/png':
-                    imageProcessingStream = new OptiPng();
-                    break;
+            if (self._storageConfig.imageOptimization) {
+                switch (mime.type) {
+                    case 'image/gif':
+                        imageProcessingStream = new Gifsicle(['-w', '-O3']);
+                        break;
+                    case 'image/jpeg':
+                        imageProcessingStream = new JpegTran(['-copy', 'all', '-optimize', '-progressive']);
+                        break;
+                    case 'image/png':
+                        imageProcessingStream = new OptiPng();
+                        break;
+                }
             }
 
             // file encryption

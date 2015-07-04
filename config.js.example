@@ -10,7 +10,8 @@ module.exports = {
         data: 'jii'
     },
     storage: {
-        maxUploadSize: 52428800
+        maxUploadSize: 52428800,
+        imageOptimization: true
     },
     clamav: {
         host: '127.0.0.1',
