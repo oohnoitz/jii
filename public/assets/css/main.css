@@ -73,7 +73,8 @@ form p {
 #files .result {
     text-align: right;
 }
-#files .download-link {
+#files .download-link,
+#files .file-error {
     display: none;
 }
 #files .file-remove {

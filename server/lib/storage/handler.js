@@ -13,14 +13,19 @@ module.exports = {
 
         self.fs.find(guid, function (err, file) {
             if (err || file === null) {
-                return reply({ 'statusCode': 404, 'error': 'Not Found' })
-                    .code(404);
+                return reply({
+                    'statusCode': 404,
+                    'error': 'Not Found'
+                }).code(404);
             }
 
             self.fs.read(guid, function (err, data) {
                 if (err) {
-                    return reply({ 'statusCode': 500, 'error': 'Internal Server Error', 'message': 'We encountered an unexpected readStream error.' })
-                        .code(500);
+                    return reply({
+                        'statusCode': 500,
+                        'error': 'Internal Server Error',
+                        'message': 'We encountered an unexpected error. Please try again later.'
+                    }).code(500);
                 }
 
                 var decryptStream = passStream();

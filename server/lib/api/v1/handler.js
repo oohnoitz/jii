@@ -15,8 +15,10 @@ module.exports = {
 
         self.fs.find(guid, function (err, file) {
             if (err || file === null) {
-                return reply({ 'statusCode': 404, 'error': 'Not Found' })
-                    .code(404);
+                return reply({
+                    statusCode: 404,
+                    error: 'Not Found'
+                }).code(404);
             }
 
             delete file.metadata;
@@ -29,7 +31,11 @@ module.exports = {
         var self = this;
 
         if (!request.payload['file'] && !request.payload['link']) {
-            return reply({ 'statusCode': 400, 'error': 'Bad Request' });
+            return reply({
+                statusCode: 400,
+                error: 'Bad Request',
+                message: 'Your request syntax is malformed.'
+            }).code(400);
         }
 
         if (request.payload['file']) {
@@ -42,7 +48,11 @@ module.exports = {
                 var data = parseReq('link', request, file);
                 return saveFile(self, data, file, reply);
             }).on('error', function (err) {
-                return reply({ error: 'Connection Failed', message: 'Unable to retrieve remote file.' });
+                return reply({
+                    statusCode: 409,
+                    error: 'Conflict',
+                    message: 'We were unable to retrieve the remote link.'
+                }).code(409);
             });
         }
     },
@@ -53,18 +63,26 @@ module.exports = {
 
         self.fs.find(guid, function (err, file) {
             if (err || file === null) {
-                return reply({ 'statusCode': 404, 'error': 'Not Found' })
-                    .code(404);
+                return reply({
+                    statusCode: 404,
+                    error: 'Not Found'
+                }).code(404);
             }
 
             bcrypt.compare(hash, file.metadata.deleteHash, function (err, res) {
                 if (res) {
                     self.fs.delete(file, function (err, res) {
-                        return reply({ 'statusCode': 200, 'message': 'The file has been deleted.' });
+                        return reply({
+                            statusCode: 200,
+                            message: 'The file has been deleted.'
+                        });
                     });
                 } else {
-                    return reply({ 'statusCode': 401, 'error': 'Invalid Deletion Hash.' })
-                        .code(401);
+                    return reply({
+                        statusCode: 401,
+                        error: 'Unauthorized',
+                        message: 'You have provided an invalid deletion hash.'
+                    }).code(401);
                 }
             });
         });
@@ -121,9 +139,9 @@ var saveFile = function (self, data, fileStream, reply) {
                                 .scan(dataStream, function (err, obj, malware) {
                                     if (malware) {
                                         reject({
-                                            data : data,
-                                            error: 'Virus Signature Detected',
-                                            message: 'This file contains a virus signature. (' + malware + ')'
+                                            error: 'Forbidden',
+                                            message: 'This file contains a virus signature. (' + malware + ')',
+                                            data: data
                                         });
                                     } else {
                                         resolve(file);
@@ -142,7 +160,10 @@ var saveFile = function (self, data, fileStream, reply) {
         return reply(result);
     }, function (error) {
         self.fs.delete(error.data, function (err, res) {
-            return reply({ error: error.error, message: error.message });
+            return reply({
+                error: error.error,
+                message: error.message
+            });
         });
     });
 };

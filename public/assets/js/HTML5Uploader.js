@@ -131,15 +131,19 @@
                 progressbar = data.context.find('.progress .determinate'),
                 file = files || {error: 'Empty file upload result'};
 
-                //could have used _transition, but its buggy for some reason..
-                data.context
-                    .find('.file-remove').hide();
+                if ('error' in file) {
+                    data.context
+                        .find('.file-error')
+                        .text(file.message).show();
+                } else {
+                    data.context
+                        .find('.file-download')
+                        .fadeIn('fast');
 
-                data.context
-                    .find('.file-download').fadeIn('fast');
-
-                data.context
-                    .find('.download-link').attr('href', file.url).show();
+                    data.context
+                        .find('.download-link')
+                        .attr('href', file.url).show();
+                }
 
                 if (!$.support.transition) {
                     data.context
