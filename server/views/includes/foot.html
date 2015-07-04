@@ -6,8 +6,8 @@
             </div>
         </div>
     </footer>
-    <script src="/assets/bower/jquery/dist/jquery.min.js"></script>
+    <script src="/assets/bower/jquery/dist/jquery.min.js{{version.cache}}"></script>
     {% for item in assets.js %}
-        <script src="/assets/{{item}}"></script>
+        <script src="/assets/{{item}}{{version.cache}}"></script>
     {% endfor %}
 {% endblock %}

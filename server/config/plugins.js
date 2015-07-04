@@ -23,6 +23,9 @@ module.exports = function (server, config) {
             options: options.assets
         },
         {
+            register: require('hapi-cache-buster')
+        },
+        {
             register: require('../lib/storage'),
             options: {
                 config: config
