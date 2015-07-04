@@ -15,14 +15,17 @@ module.exports = {
         css: [
             'bower/materialize/dist/css/materialize.min.css',
             'css/main.css'
+        ],
+        font: [
+            'bower/materialize/font/**'
         ]
     },
     production: {
         js: [
-            'js/core.js'
+            'js/app.js'
         ],
         css: [
-            'css/style.css'
+            'css/app.css'
         ]
     }
 };

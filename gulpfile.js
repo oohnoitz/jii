@@ -22,15 +22,19 @@ gulp.task('default', function(){
 
     // concat and minify your css
     gulp.src(assets.development.css)
-        .pipe(concat('style.css'))
+        .pipe(concat('app.css'))
         .pipe(minifycss())
         .pipe(gulp.dest('./css/'));
 
     // concat and minify your js
     gulp.src(assets.development.js)
-        .pipe(concat('core.js'))
+        .pipe(concat('app.js'))
         .pipe(uglify())
         .pipe(gulp.dest('./js/'));
+
+    // copy fonts to fonts folder
+    gulp.src(assets.development.font)
+        .pipe(gulp.dest('./font/'));
 
     // optimize your images
     gulp.src('./images/*')

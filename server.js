@@ -7,7 +7,7 @@ var Hapi = require('hapi'),
 
 // Create a server with a host, port, and options
 var server = new Hapi.Server();
-server.connection({ host: config.app.host, port: config.app.port});
+server.connection({ host: config.app.host, port: config.app.port });
 
 // Export the server to be required elsewhere.
 module.exports = server;
