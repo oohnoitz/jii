@@ -18,6 +18,11 @@ module.exports = function (config) {
         },
         {
             method: 'GET',
+            path: '/about',
+            config: controller.base.about
+        },
+        {
+            method: 'GET',
             path: '/',
             config: controller.base.index
         }
