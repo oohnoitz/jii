@@ -7,6 +7,7 @@ var path = require('path');
 var rand = require('random-key');
 var Promise = require('es6-promise').Promise;
 var headers = require('../../../utils/headers');
+var tools = require('../../../utils/tools');
 
 module.exports = {
     select: function (request, reply) {
@@ -116,6 +117,8 @@ var parseReq = function (type, req, res) {
             return {};
     }
 
+    file.filename = tools.sanitizeFilename(file.filename);
+
     return file;
 };
 
@@ -127,7 +130,7 @@ var saveFile = function (self, data, fileStream, reply) {
             } else {
                 delete file.aliases;
                 file.metadata.deleteHash = data.deleteHash;
-                file.url = self.config.app.uri + (file.metadata.secure ? '/s/' : '/') + file._id + path.extname(file.filename);
+                file.url = self.config.app.uri + (file.metadata.secure ? '/s/' : '/') + file._id + tools.getFileExtension(file.filename);
 
                 if (self.config.clamav.enabled === true) {
                     self.fs.read(file._id, function (err, dataStream) {

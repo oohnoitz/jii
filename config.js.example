@@ -11,7 +11,13 @@ module.exports = {
     },
     storage: {
         maxUploadSize: 52428800,
-        imageOptimization: true
+        imageOptimization: true,
+        validFileExtensions: [
+            '.tar.gz',
+            '.tar.bz', '.tar.bz2',
+            '.tar.xz',
+            '.user.js'
+        ]
     },
     clamav: {
         host: '127.0.0.1',
