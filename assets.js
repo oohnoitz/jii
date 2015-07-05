@@ -9,7 +9,6 @@ module.exports = {
             'js/jquery.fileupload.js',
             'js/jquery.fileupload-process.js',
             'js/jquery.fileupload-validate.js',
-            'js/HTML5Uploader.js',
             'js/main.js'
         ],
         css: [

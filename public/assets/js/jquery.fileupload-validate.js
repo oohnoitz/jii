@@ -34,7 +34,7 @@
         {
             action: 'validate',
             // Always trigger this action,
-            // even if the previous action was rejected: 
+            // even if the previous action was rejected:
             always: true,
             // Options taken from the global options map:
             acceptFileTypes: '@',
@@ -48,19 +48,19 @@
     // The File Upload Validation plugin extends the fileupload widget
     // with file validation functionality:
     $.widget('blueimp.fileupload', $.blueimp.fileupload, {
-
         options: {
-            /*
             // The regular expression for allowed file types, matches
             // against either file type or file name:
-            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+            // acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+
             // The maximum allowed file size in bytes:
-            maxFileSize: 10000000, // 10 MB
+            // maxFileSize: 10000000, // 10 MB
+
             // The minimum allowed file size in bytes:
-            minFileSize: undefined, // No minimal file size
+            // minFileSize: undefined, // No minimal file size
+
             // The limit of files to be uploaded:
-            maxNumberOfFiles: 10,
-            */
+            // maxNumberOfFiles: 10,
 
             // Function returning the current number of files,
             // has to be overriden for maxNumberOfFiles validation:
@@ -68,16 +68,15 @@
 
             // Error and info messages:
             messages: {
-                maxNumberOfFiles: 'Maximum number of files exceeded',
-                acceptFileTypes: 'File type not allowed',
-                maxFileSize: 'File is too large',
-                minFileSize: 'File is too small',
-                alreadyAdded: 'File already added'
+                maxNumberOfFiles: 'The maximum number of files allowed has been exceeded.',
+                acceptFileTypes: 'This file type is not allowed.',
+                maxFileSize: 'This file exceeds the allowed max file size.',
+                minFileSize: 'This file is too small.',
+                alreadyAdded: 'This file has already been queued.'
             }
         },
 
         processActions: {
-
             validate: function (data, options) {
                 if (options.disabled) {
                     return data;
@@ -86,26 +85,41 @@
                     settings = this.options,
                     file = data.files[data.index],
                     numberOfFiles = settings.getNumberOfFiles();
-                
-                
-                if (numberOfFiles && $.type(options.maxNumberOfFiles) === 'number' &&
-                        numberOfFiles + data.files.length > options.maxNumberOfFiles) {
-                    file.error = settings.i18n('maxNumberOfFiles');
-                } else if (options.acceptFileTypes &&
-                        !(options.acceptFileTypes.test(file.type) ||
-                        options.acceptFileTypes.test(file.name))) {
-                    file.error = settings.i18n('acceptFileTypes');
-                } else if (options.maxFileSize && file.size > options.maxFileSize) {
-                    file.error = settings.i18n('maxFileSize');
-                } else if ($.type(file.size) === 'number' &&
-                        file.size < options.minFileSize) {
-                    file.error = settings.i18n('minFileSize');
+
+                if (
+                    numberOfFiles &&
+                    $.type(options.maxNumberOfFiles) === 'number' &&
+                    numberOfFiles + data.files.length > options.maxNumberOfFiles
+                ) {
+                    file.error = 'File Count Exceeded';
+                    file.message = settings.i18n('maxNumberOfFiles');
+                } else if (
+                    options.acceptFileTypes &&
+                    !(options.acceptFileTypes.test(file.type) ||
+                    options.acceptFileTypes.test(file.name))
+                ) {
+                    file.error = 'Forbidden File Type';
+                    file.message = settings.i18n('acceptFileTypes');
+                } else if (
+                    options.maxFileSize &&
+                    file.size > options.maxFileSize
+                ) {
+                    file.error = 'Invalid File Size';
+                    file.message = settings.i18n('maxFileSize');
+                } else if (
+                    $.type(file.size) === 'number' &&
+                    file.size < options.minFileSize
+                ) {
+                    file.error = 'Invalid File Size';
+                    file.message = settings.i18n('minFileSize');
                 } else if (this._fileAlreadyAdded(file)) {
-                    //@filkor HTML5Upload
-                    file.error = settings.i18n('alreadyAdded');
+                    file.error = 'File Exists';
+                    file.message = settings.i18n('alreadyAdded');
                 } else {
                     delete file.error;
+                    delete file.message;
                 }
+
                 if (file.error || data.files.error) {
                     data.files.error = true;
                     dfd.rejectWith(this, [data]);
@@ -114,12 +128,11 @@
                 }
                 return dfd.promise();
             }
-
         },
 
         _fileAlreadyAdded: function(file) {
             var names = $("#fileupload .filename"),
-                exists = false; 
+                exists = false;
 
             names.each(function () {
                 if ($(this).html() == file.name) {
@@ -129,9 +142,7 @@
                     return false;
                 }
             });
-            return exists; 
+            return exists;
         }
-
     });
-
 }));

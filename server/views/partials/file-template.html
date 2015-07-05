@@ -1,10 +1,10 @@
 {% raw %}
-    <script id="file-template" type="text/x-handlebars-template">
+    <script id="upload-template" type="text/x-handlebars-template">
     {{#each files}}
         <div class="row file-item">
             <div class="card">
                 <div class="card-content">
-                    <span class="card-title grey-text text-darken-4 truncate">{{shortenName name}}</span>
+                    <span class="card-title grey-text text-darken-4 truncate">{{name}}</span>
                     <p class="card-size">({{formatFileSize size}})</p>
                 </div>
                 <div class="card-action">
