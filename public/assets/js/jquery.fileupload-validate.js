@@ -1,5 +1,5 @@
 /*
- * jQuery File Upload Validation Plugin 1.1
+ * jQuery File Upload Validation Plugin 1.1.3
  * https://github.com/blueimp/jQuery-File-Upload
  *
  * Copyright 2013, Sebastian Tschan
@@ -9,8 +9,7 @@
  * http://www.opensource.org/licenses/MIT
  */
 
-/*jslint nomen: true, unparam: true, regexp: true */
-/*global define, window */
+/* global define, require, window */
 
 (function (factory) {
     'use strict';
@@ -20,6 +19,9 @@
             'jquery',
             './jquery.fileupload-process'
         ], factory);
+    } else if (typeof exports === 'object') {
+        // Node/CommonJS:
+        factory(require('jquery'));
     } else {
         // Browser globals:
         factory(
@@ -70,9 +72,8 @@
             messages: {
                 maxNumberOfFiles: 'The maximum number of files allowed has been exceeded.',
                 acceptFileTypes: 'This file type is not allowed.',
-                maxFileSize: 'This file exceeds the allowed max file size.',
-                minFileSize: 'This file is too small.',
-                alreadyAdded: 'This file has already been queued.'
+                maxFileSize: 'This file exceeds the max allowed file size.',
+                minFileSize: 'This file is too small.'
             }
         },
 
@@ -112,9 +113,6 @@
                 ) {
                     file.error = 'Invalid File Size';
                     file.message = settings.i18n('minFileSize');
-                } else if (this._fileAlreadyAdded(file)) {
-                    file.error = 'File Exists';
-                    file.message = settings.i18n('alreadyAdded');
                 } else {
                     delete file.error;
                     delete file.message;
@@ -128,21 +126,6 @@
                 }
                 return dfd.promise();
             }
-        },
-
-        _fileAlreadyAdded: function(file) {
-            var names = $("#fileupload .filename"),
-                exists = false;
-
-            names.each(function () {
-                if ($(this).html() == file.name) {
-                    exists = true;
-
-                    //exit from each
-                    return false;
-                }
-            });
-            return exists;
         }
     });
 }));

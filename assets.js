@@ -3,11 +3,11 @@ module.exports = {
     development: {
         js: [
             'bower/materialize/dist/js/materialize.min.js',
-            'js/handlebars.min.js',
-            'js/jquery.ui.widget.js',
-            'js/jquery.iframe-transport.js',
-            'js/jquery.fileupload.js',
-            'js/jquery.fileupload-process.js',
+            'bower/handlebars/handlebars.min.js',
+            'bower/blueimp-file-upload/js/vendor/jquery.ui.widget.js',
+            'bower/blueimp-file-upload/js/jquery.iframe-transport.js',
+            'bower/blueimp-file-upload/js/jquery.fileupload.js',
+            'bower/blueimp-file-upload/js/jquery.fileupload-process.js',
             'js/jquery.fileupload-validate.js',
             'js/main.js'
         ],

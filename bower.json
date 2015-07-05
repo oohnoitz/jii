@@ -12,7 +12,9 @@
     "tests"
   ],
   "dependencies": {
-    "materialize": "~0.97.0",
-    "jquery": "~2.1.4"
+    "blueimp-file-upload": "~9.10.1",
+    "handlebars": "~3.0.3",
+    "jquery": "~2.1.4",
+    "materialize": "~0.97.0"
   }
 }
