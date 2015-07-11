@@ -3,27 +3,27 @@
 {% block title %}{{title}}{% endblock %}
 
 {% block content %}
-    <main>
-        <div class="parallax-container" id="index-banner">
-            <div class="parallax">
-                <img src="/assets/images/header.png">
-            </div>
-        </div>
+  <main>
+    <div class="parallax-container" id="index-banner">
+      <div class="parallax">
+        <img src="/assets/images/header.png">
+      </div>
+    </div>
 
-        <form id="uploader" action="/api/v1/upload" data-path="/api/v1/upload" data-max-size="{{app.storage.maxUploadSize}}" method="POST" enctype="multipart/form-data">
-            <div class="container">
-                <div class="row">
-                    <div id="browse-button" class="waves-effect waves-light btn-large">
-                        Browse
-                        <input type="file" id="browse-file-button" name="file" multiple="">
-                    </div>
-                    <button id="upload-button" class="waves-effect waves-light btn-large">
-                        Upload
-                    </button>
-                </div>
-                <div class="data" id="files"></div>
-            </div>
-        </form>
-        {% include './partials/file-template.html' %}
-    </main>
+    <form id="uploader" action="/api/v1/upload" data-path="/api/v1/upload" data-max-size="{{app.storage.maxUploadSize}}" method="POST" enctype="multipart/form-data">
+      <div class="container">
+        <div class="row">
+          <div id="browse-button" class="waves-effect waves-light btn-large">
+            Browse
+            <input type="file" id="browse-file-button" name="file" multiple="">
+          </div>
+          <button id="upload-button" class="waves-effect waves-light btn-large">
+            Upload
+          </button>
+        </div>
+        <div class="data" id="files"></div>
+      </div>
+    </form>
+    {% include './partials/file-template.html' %}
+  </main>
 {% endblock %}

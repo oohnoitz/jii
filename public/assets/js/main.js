@@ -1,382 +1,385 @@
-(function (factory) {
-    'use strict';
+(function(factory) {
+  'use strict';
 
-    if (typeof define === 'function' && define.amd) {
-        define([
-            'tmpl',
-            'jquery',
-            './jquery.fileupload-validate'
-        ], factory);
-    } else {
-        factory(
-            window.jQuery,
-            window.Handlebars
-        );
-    }
-}(function ($, Handlebars) {
-    'use strict';
-
-    $.blueimp.fileupload.prototype._specialOptions.push(
-        'filesContainer',
-        'uploadTemplateId',
-        'downloadTemplateId'
+  if (typeof define === 'function' && define.amd) {
+    define([
+      'tmpl',
+      'jquery',
+      './jquery.fileupload-validate'
+    ], factory);
+  } else {
+    factory(
+      window.jQuery,
+      window.Handlebars
     );
+  }
+}(function($, Handlebars) {
+  'use strict';
 
-    $.widget('jii.uploader', $.blueimp.fileupload, {
-        options: {
-            autoUpload: false,
-            maxChunkSize: 0,
-            uploadTemplateId: 'upload-template',
-            downloadTemplateId: 'download-template',
-            filesContainer: '#files',
-            dataType: 'json',
+  $.blueimp.fileupload.prototype._specialOptions.push(
+    'filesContainer',
+    'uploadTemplateId',
+    'downloadTemplateId'
+  );
 
-            getNumberofFiles: function () {
-                return this.filesContainer.children().length;
-            },
+  $.widget('jii.uploader', $.blueimp.fileupload, {
+    options: {
+      autoUpload: false,
+      maxChunkSize: 0,
+      uploadTemplateId: 'upload-template',
+      downloadTemplateId: 'download-template',
+      filesContainer: '#files',
+      dataType: 'json',
 
-            getUploadResponse: function(data) {
-                if (data.result) {
-                    return data.result;
+      getNumberofFiles: function() {
+        return this.filesContainer.children().length;
+      },
+
+      getUploadResponse: function(data) {
+        if (data.result) {
+          return data.result;
+        }
+
+        return [];
+      },
+
+      // callback for dealing with files added to the uploader
+      add: function(e, data) {
+        var $this = $(this),
+          that = $this.data('jii-uploader'),
+          options = that.options,
+          files = data.files,
+          queue = $('#browse-file-button'),
+          existingFiles = options.existingFiles || [];
+
+        data
+          .process(function() {
+            return $this.uploader('process', data);
+          })
+          .always(function() {
+            data.context = that._renderUpload(files).data('data', data);
+            options.filesContainer[
+              options.prependFiles ? 'prepend' : 'append'
+            ](data.context);
+
+            that._reflow(data.context);
+            that._transition(data.context)
+              .done(function() {
+                if (
+                  (that._trigger('added', e, data) !== false) &&
+                  (options.autoUpload || data.autoUpload) &&
+                  (data.autoUpload !== false) &&
+                  !(data.files.error)
+                ) {
+                  data.submit();
                 }
 
-                return [];
-            },
-
-            // callback for dealing with files added to the uploader
-            add: function (e, data) {
-                var $this = $(this),
-                    that = $this.data('jii-uploader'),
-                    options = that.options,
-                    files = data.files,
-                    queue = $('#browse-file-button'),
-                    existingFiles = options.existingFiles || [];
-
-                data
-                    .process(function () {
-                        return $this.uploader('process', data);
-                    })
-                    .always(function () {
-                        data.context = that._renderUpload(files).data('data', data);
-                        options.filesContainer[
-                            options.prependFiles ? 'prepend' : 'append'
-                        ](data.context);
-
-                        that._reflow(data.context);
-                        that._transition(data.context)
-                            .done(function () {
-                                if (
-                                    (that._trigger('added', e, data) !== false) &&
-                                    (options.autoUpload || data.autoUpload) &&
-                                    (data.autoUpload !== false) &&
-                                    !(data.files.error)
-                                ) {
-                                    data.submit();
-                                }
-
-                                var file = data.files[0];
-                                if ('error' in file) {
-                                    data.context
-                                        .find('.file-remove')
-                                        .hide();
-
-                                    data.context
-                                        .find('.file-error')
-                                        .text(file.message)
-                                        .show();
-                                }
-                            });
-                    });
-            },
-
-            // callback for the start of each file upload request
-            send: function (e, data) {
-                var that = $(this).data('jii-uploader');
-
-                if (data.context && data.dataType && data.dataType.substr(0, 6) === 'iframe') {
-                    if (!$.support.transition) {
-                        data.context
-                            .find('.progress').find('.determinate')
-                            .addClass('indeterminate').removeClass('determinate')
-                            .css('width', '100%');
-                    }
-                }
-
-                return that._trigger('sent', e, data);
-            },
-
-            // callback for successful uploads
-            done: function (e, data) {
-                var that = $(this).data('jii-uploader'),
-                    getUploadResponse = data.getUploadResponse || that.options.getUploadResponse,
-                    progressBar = data.context.find('.progress .determinate'),
-                    files = getUploadResponse(data),
-                    file = files || { error: 'Empty Upload Result', message: 'No upload result response found.' };
-
+                var file = data.files[0];
                 if ('error' in file) {
-                    data.context
-                        .find('.file-error')
-                        .text(file.message)
-                        .show();
-                } else {
-                    data.context
-                        .find('.file-download')
-                        .show();
+                  data.context
+                    .find('.file-remove')
+                    .hide();
 
-                    data.context
-                        .find('.download-link')
-                        .attr('href', file.url)
-                        .show();
+                  data.context
+                    .find('.file-error')
+                    .text(file.message)
+                    .show();
                 }
+              });
+          });
+      },
 
-                if (!$.support.transition) {
-                    data.context
-                        .find('.progress')
-                        .hide();
-                }
-            },
+      // callback for the start of each file upload request
+      send: function(e, data) {
+        var that = $(this).data('jii-uploader');
 
-            // callback for failed uploads
-            fail: function (e, data) {
-                data.context
-                    .each(function (index) {
-                        var file = data.files[index];
-                        file.error = file.error || data.errorThrown || true;
-                        console.log(file.error);
-                    });
-            },
+        if (data.context && data.dataType && data.dataType.substr(0, 6) === 'iframe') {
+          if (!$.support.transition) {
+            data.context
+              .find('.progress').find('.determinate')
+              .addClass('indeterminate').removeClass('determinate')
+              .css('width', '100%');
+          }
+        }
 
-            // callback for upload progress events
-            progress: function (e, data) {
-                if (data.context) {
-                    var percentage = Math.floor(data.loaded / data.total * 100);
+        return that._trigger('sent', e, data);
+      },
 
-                    data.context
-                        .find('.progress')
-                        .attr('aria-valuenow', percentage)
-                        .show()
-                        .find('.determinate')
-                        .css('width', percentage + '%');
+      // callback for successful uploads
+      done: function(e, data) {
+        var that = $(this).data('jii-uploader'),
+          getUploadResponse = data.getUploadResponse || that.options.getUploadResponse,
+          progressBar = data.context.find('.progress .determinate'),
+          files = getUploadResponse(data),
+          file = files || {
+            error: 'Empty Upload Result',
+            message: 'No upload result response found.'
+          };
 
-                    data.context
-                        .find('.file-remove')
-                        .hide();
-                }
-            },
+        if ('error' in file) {
+          data.context
+            .find('.file-error')
+            .text(file.message)
+            .show();
+        } else {
+          data.context
+            .find('.file-download')
+            .show();
 
-            // callback for global upload progress events
-            progressall: function (e, data) {
-                var $this = $(this),
-                    time = $this.find('.global-upload-time'),
-                    rate = $this.find('.global-upload-rate');
+          data.context
+            .find('.download-link')
+            .attr('href', file.url)
+            .show();
+        }
 
-                time.find('span').html(
-                    $this.data('jii-uploader')._renderTimeInfo(data)
-                );
+        if (!$.support.transition) {
+          data.context
+            .find('.progress')
+            .hide();
+        }
+      },
 
-                rate.find('span').html(
-                    $this.data('jii-uploader')._renderBitrateInfo(data)
-                );
-            },
+      // callback for failed uploads
+      fail: function(e, data) {
+        data.context
+          .each(function(index) {
+            var file = data.files[index];
+            file.error = file.error || data.errorThrown || true;
+            console.log(file.error);
+          });
+      },
 
-            progressstart: function (e, data) {},
-            destroy: function (e, data) {}
-        },
+      // callback for upload progress events
+      progress: function(e, data) {
+        if (data.context) {
+          var percentage = Math.floor(data.loaded / data.total * 100);
 
-            _renderTemplate: function (func, files) {
-                if (!func) {
-                    return $();
-                }
+          data.context
+            .find('.progress')
+            .attr('aria-valuenow', percentage)
+            .show()
+            .find('.determinate')
+            .css('width', percentage + '%');
 
-                var result = func({
-                    files: files,
-                    options: this.options
-                });
+          data.context
+            .find('.file-remove')
+            .hide();
+        }
+      },
 
-                if (result instanceof $) {
-                    return result;
-                }
+      // callback for global upload progress events
+      progressall: function(e, data) {
+        var $this = $(this),
+          time = $this.find('.global-upload-time'),
+          rate = $this.find('.global-upload-rate');
 
-                return $(this.options.templatesContainer)
-                    .html(result)
-                    .children();
-            },
+        time.find('span').html(
+          $this.data('jii-uploader')._renderTimeInfo(data)
+        );
 
-            _renderUpload: function (files) {
-                return this._renderTemplate(this.options.uploadTemplate, files);
-            },
+        rate.find('span').html(
+          $this.data('jii-uploader')._renderBitrateInfo(data)
+        );
 
-            _reflow: function (node) {
-                return $.support.transition && node.length && node[0].offsetWidth;
-            },
+        document.title =
+      },
 
-            _transition: function (node) {
-                var dfd = $.Deferred();
+      progressstart: function(e, data) {},
+      destroy: function(e, data) {}
+    },
 
-                if ($.support.transition) {
-                    node.on($.support.transition.end, function (e) {
-                        if (e.target === node[0]) {
-                            node.unbind($.support.transition.end);
-                            dfd.resolveWith(node);
-                        }
-                    });
-                } else {
-                    dfd.resolveWith(node);
-                }
+    _renderTemplate: function(func, files) {
+      if (!func) {
+        return $();
+      }
 
-                return dfd;
-            },
+      var result = func({
+        files: files,
+        options: this.options
+      });
 
-            _formatRate: function (bitrate) {
-                if (typeof bitrate !== 'number') {
-                    return '';
-                }
-                if (bitrate >= 8589934592) {
-                    return (bitrate / 107374824 / 8).toFixed(2) + ' GB/s';
-                }
-                if (bitrate >= 12388608) {
-                    return (bitrate / 1048576 / 8).toFixed(2) + ' MB/s';
-                }
-                if (bitrate >= 8192) {
-                    return (bitrate / 1024 / 8).toFixed(2) + ' KB/s';
-                }
-                if (bitrate <= 0) {
-                    return 0;
-                }
+      if (result instanceof $) {
+        return result;
+      }
 
-                return (bitrate / 8).toFixed(2) + ' bytes/s';
-            },
+      return $(this.options.templatesContainer)
+        .html(result)
+        .children();
+    },
 
-            _formatTime: function (seconds) {
-                if (seconds < 0) {
-                    seconds = 0;
-                }
+    _renderUpload: function(files) {
+      return this._renderTemplate(this.options.uploadTemplate, files);
+    },
 
-                var date = new Date(seconds * 1000),
-                    days = Math.floor(seconds / 86400);
+    _reflow: function(node) {
+      return $.support.transition && node.length && node[0].offsetWidth;
+    },
 
-                return (days ? days + 'd ' : '') +
-                    ('0' + date.getUTCHours()).slice(-2) + ':' +
-                    ('0' + date.getUTCMinutes()).slice(-2) + ':' +
-                    ('0' + date.getUTCSeconds()).slice(-2);
-            },
+    _transition: function(node) {
+      var dfd = $.Deferred();
 
-            _renderRate: function (data) {
-                return this.formatRate(data.bitrate);
-            },
+      if ($.support.transition) {
+        node.on($.support.transition.end, function(e) {
+          if (e.target === node[0]) {
+            node.unbind($.support.transition.end);
+            dfd.resolveWith(node);
+          }
+        });
+      } else {
+        dfd.resolveWith(node);
+      }
 
-            _renderTime: function (data) {
-                return this._formatTime(
-                    (data.total - data.loaded) * 8 / data.bitrate
-                );
-            },
+      return dfd;
+    },
 
-            _startHandler: function (e) {
-                e.preventDefault();
-                $('.file-item').each(function (index, file) {
-                    var data = $(file).data('data');
+    _formatRate: function(bitrate) {
+      if (typeof bitrate !== 'number') {
+        return '';
+      }
+      if (bitrate >= 8589934592) {
+        return (bitrate / 107374824 / 8).toFixed(2) + ' GB/s';
+      }
+      if (bitrate >= 12388608) {
+        return (bitrate / 1048576 / 8).toFixed(2) + ' MB/s';
+      }
+      if (bitrate >= 8192) {
+        return (bitrate / 1024 / 8).toFixed(2) + ' KB/s';
+      }
+      if (bitrate <= 0) {
+        return 0;
+      }
 
-                    if (
-                        data &&
-                        data.submit &&
-                        !data.jqXHR &&
-                        !data.files.error &&
-                        data.submit()
-                    ) {
+      return (bitrate / 8).toFixed(2) + ' bytes/s';
+    },
 
-                    }
-                });
-            },
+    _formatTime: function(seconds) {
+      if (seconds < 0) {
+        seconds = 0;
+      }
 
-            _cancelHandler: function (e) {
-                var template = $(e.currentTarget).closest('.file-item'),
-                    data = template.data('data') || {},
-                    that = this;
+      var date = new Date(seconds * 1000),
+        days = Math.floor(seconds / 86400);
 
-                template.slideUp('fast', function () {
-                    if (data.jqXHR) {
-                        data.jqXHR.abort();
-                    }
+      return (days ? days + 'd ' : '') +
+        ('0' + date.getUTCHours()).slice(-2) + ':' +
+        ('0' + date.getUTCMinutes()).slice(-2) + ':' +
+        ('0' + date.getUTCSeconds()).slice(-2);
+    },
 
-                    template.remove();
-                });
-            },
+    _renderRate: function(data) {
+      return this.formatRate(data.bitrate);
+    },
 
-            _initTemplate: function () {
-                var options = this.options;
+    _renderTime: function(data) {
+      return this._formatTime(
+        (data.total - data.loaded) * 8 / data.bitrate
+      );
+    },
 
-                options.templatesContainer = this.document[0].createElement(
-                    options.filesContainer.prop('nodeName')
-                );
+    _startHandler: function(e) {
+      e.preventDefault();
+      $('.file-item').each(function(index, file) {
+        var data = $(file).data('data');
 
-                if (Handlebars && options.uploadTemplateId) {
-                    var source = $('#' + options.uploadTemplateId).html();
-                    options.uploadTemplate = Handlebars.compile(source);
-                }
-            },
+        if (
+          data &&
+          data.submit &&
+          !data.jqXHR &&
+          !data.files.error &&
+          data.submit()
+        ) {
 
-            _initFileContainer: function () {
-                var options = this.options;
+        }
+      });
+    },
 
-                if (options.filesContainer === undefined) {
-                    options.filesContainer = this.element.find('#files');
-                } else if (!(options.filesContainer instanceof $)) {
-                    options.filesContainer = $(options.filesContainer);
-                }
-            },
+    _cancelHandler: function(e) {
+      var template = $(e.currentTarget).closest('.file-item'),
+        data = template.data('data') || {},
+        that = this;
 
-            _initHandlebarHelpers: function () {
-                Handlebars.registerHelper('formatFileSize', function (bytes) {
-                    if (typeof bytes !== 'number') {
-                        return '';
-                    }
-                    if (bytes >= 1073741824) {
-                        return (bytes / 1073741824).toFixed(1) + ' GB';
-                    }
-                    if (bytes >= 1048576) {
-                        return (bytes / 1048576).toFixed(1) + ' MB';
-                    }
-                    return (bytes / 1024).toFixed(0) + ' KB';
-                });
-            },
+      template.slideUp('fast', function() {
+        if (data.jqXHR) {
+          data.jqXHR.abort();
+        }
 
-            _initEventHandlers: function () {
-                var uploadButton = $('#upload-button');
+        template.remove();
+      });
+    },
 
-                this._super();
-                this._on(
-                    uploadButton,
-                    {
-                        'click': this._startHandler
-                    }
-                );
-                this._on(
-                    this.options.filesContainer,
-                    {
-                        'click .file-remove': this._cancelHandler
-                    }
-                );
-            },
+    _initTemplate: function() {
+      var options = this.options;
 
-            _initSpecialOptions: function () {
-                this._super();
-                this._initFileContainer();
-                this._initTemplate();
-            },
+      options.templatesContainer = this.document[0].createElement(
+        options.filesContainer.prop('nodeName')
+      );
 
-            _create: function () {
-                this._super();
-                this._initHandlebarHelpers();
-            }
-    });
+      if (Handlebars && options.uploadTemplateId) {
+        var source = $('#' + options.uploadTemplateId).html();
+        options.uploadTemplate = Handlebars.compile(source);
+      }
+    },
+
+    _initFileContainer: function() {
+      var options = this.options;
+
+      if (options.filesContainer === undefined) {
+        options.filesContainer = this.element.find('#files');
+      } else if (!(options.filesContainer instanceof $)) {
+        options.filesContainer = $(options.filesContainer);
+      }
+    },
+
+    _initHandlebarHelpers: function() {
+      Handlebars.registerHelper('formatFileSize', function(bytes) {
+        if (typeof bytes !== 'number') {
+          return '';
+        }
+        if (bytes >= 1073741824) {
+          return (bytes / 1073741824).toFixed(1) + ' GB';
+        }
+        if (bytes >= 1048576) {
+          return (bytes / 1048576).toFixed(1) + ' MB';
+        }
+        return (bytes / 1024).toFixed(0) + ' KB';
+      });
+    },
+
+    _initEventHandlers: function() {
+      var uploadButton = $('#upload-button');
+
+      this._super();
+      this._on(
+        uploadButton, {
+          'click': this._startHandler
+        }
+      );
+      this._on(
+        this.options.filesContainer, {
+          'click .file-remove': this._cancelHandler
+        }
+      );
+    },
+
+    _initSpecialOptions: function() {
+      this._super();
+      this._initFileContainer();
+      this._initTemplate();
+    },
+
+    _create: function() {
+      this._super();
+      this._initHandlebarHelpers();
+    }
+  });
 }));
 
-$(function () {
-    'use strict';
+$(function() {
+  'use strict';
 
-    //set up our file upload script
-    $("#uploader").uploader({
-        url: $("#uploader").data("path"),
-        maxFileSize: $("#uploader").data("max-size")
-    });
+  //set up our file upload script
+  $("#uploader").uploader({
+    url: $("#uploader").data("path"),
+    maxFileSize: $("#uploader").data("max-size")
+  });
 });

@@ -14,7 +14,7 @@ module.exports = function (config) {
 
     fs._client = mongoose.createConnection('mongodb://' + config.db.host + ':' + config.db.port + '/' + config.db.data, { server: { auto_reconnect: true }});
     fs._gridfs = Grid(fs._client.db, mongoose.mongo);
-    fs._client.on('open', function (err, d) {
+    fs._client.on('open', function (err) {
         if (err) {
             console.log(err);
         } else {
