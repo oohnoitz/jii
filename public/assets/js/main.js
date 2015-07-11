@@ -1,4 +1,4 @@
-(function(factory) {
+(function (factory) {
   'use strict';
 
   if (typeof define === 'function' && define.amd) {
@@ -24,6 +24,7 @@
 
   $.widget('jii.uploader', $.blueimp.fileupload, {
     options: {
+      title: document.title,
       autoUpload: false,
       maxChunkSize: 0,
       uploadTemplateId: 'upload-template',
@@ -63,6 +64,7 @@
             ](data.context);
 
             that._reflow(data.context);
+            that._renderTitle(false);
             that._transition(data.context)
               .done(function() {
                 if (
@@ -173,18 +175,27 @@
           time = $this.find('.global-upload-time'),
           rate = $this.find('.global-upload-rate');
 
+        $this.data('jii-uploader')._renderTitle(false, data);
+
         time.find('span').html(
-          $this.data('jii-uploader')._renderTimeInfo(data)
+          $this.data('jii-uploader')._renderTime(data)
         );
 
         rate.find('span').html(
-          $this.data('jii-uploader')._renderBitrateInfo(data)
+          $this.data('jii-uploader')._renderRate(data)
         );
-
-        document.title =
       },
 
-      progressstart: function(e, data) {},
+      start: function(e) {
+        var $this = $(this);
+        $this.data('jii-uploader')._renderTitle(false);
+      },
+
+      stop: function(e) {
+        var $this = $(this);
+        $this.data('jii-uploader')._renderTitle(true);
+      },
+
       destroy: function(e, data) {}
     },
 
@@ -267,7 +278,7 @@
     },
 
     _renderRate: function(data) {
-      return this.formatRate(data.bitrate);
+      return this._formatRate(data.bitrate);
     },
 
     _renderTime: function(data) {
@@ -276,19 +287,30 @@
       );
     },
 
+    _renderTitle: function(done, data) {
+      if (done) {
+        document.title = '(✔) ' + this.options.title;
+      } else {
+        if (data) {
+          var percentage = Math.floor(data.loaded / data.total * 100);
+          if (percentage < 100) {
+            document.title = '(' + percentage + '%) ' + this.options.title;
+          } else {
+            document.title = '(...) ' + this.options.title;
+          }
+        } else {
+          document.title = this.options.title;
+        }
+      }
+    },
+
     _startHandler: function(e) {
       e.preventDefault();
       $('.file-item').each(function(index, file) {
         var data = $(file).data('data');
 
-        if (
-          data &&
-          data.submit &&
-          !data.jqXHR &&
-          !data.files.error &&
-          data.submit()
-        ) {
-
+        if (data && data.submit && !data.jqXHR && !data.files.error && data.submit()) {
+          // waiting for things to happen
         }
       });
     },
