@@ -34,6 +34,7 @@ module.exports = {
                 }
 
                 return reply(data.pipe(decryptStream))
+                    .header('Cache-Control', 'public, must-revalidate, proxy-revalidate')
                     .header('Content-Disposition', headers.generateContentDisposition(file))
                     .header('Content-Length', file.length)
                     .header('Content-Type', (file.contentType || 'application/octet-stream'))
