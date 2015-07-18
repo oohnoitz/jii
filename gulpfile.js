@@ -1,12 +1,10 @@
-/**
-* Dependencies.
-*/
 var gulp = require('gulp'),
-    util = require('gulp-util'),
-    concat = require('gulp-concat'),
-    minifycss = require('gulp-minify-css'),
-    uglify = require('gulp-uglify'),
-    imagemin = require('gulp-imagemin');
+  util = require('gulp-util'),
+  concat = require('gulp-concat'),
+  minifycss = require('gulp-minify-css'),
+  imagemin = require('gulp-imagemin'),
+  uglify = require('gulp-uglify'),
+  zopfli = require('gulp-zopfli');
 
 // assets is where you define your application assets and you can pass them into gulp.
 var assets = require('./assets');
@@ -19,26 +17,30 @@ util.log('Working directory changed to', util.colors.magenta(gulpFileCwd));
 
 // the default task that is run with the command 'gulp'
 gulp.task('default', function(){
+  // concat and minify your css
+  gulp.src(assets.development.css)
+    .pipe(concat('app.css'))
+    .pipe(minifycss())
+    .pipe(gulp.dest('./css/'))
+    .pipe(zopfli())
+    .pipe(gulp.dest('./css/'));
 
-    // concat and minify your css
-    gulp.src(assets.development.css)
-        .pipe(concat('app.css'))
-        .pipe(minifycss())
-        .pipe(gulp.dest('./css/'));
+  // concat and minify your js
+  gulp.src(assets.development.js)
+    .pipe(concat('app.js'))
+    .pipe(uglify())
+    .pipe(gulp.dest('./js/'))
+    .pipe(zopfli())
+    .pipe(gulp.dest('./js/'));
 
-    // concat and minify your js
-    gulp.src(assets.development.js)
-        .pipe(concat('app.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest('./js/'));
+  // copy fonts to fonts folder
+  gulp.src(assets.development.font)
+    .pipe(gulp.dest('./font/'))
+     .pipe(zopfli())
+    .pipe(gulp.dest('./font/'));
 
-    // copy fonts to fonts folder
-    gulp.src(assets.development.font)
-        .pipe(gulp.dest('./font/'));
-
-    // optimize your images
-    gulp.src('./images/*')
-        .pipe(imagemin())
-        .pipe(gulp.dest('./images/'));
-
+  // optimize your images
+  gulp.src('./images/*')
+    .pipe(imagemin())
+    .pipe(gulp.dest('./images/'));
 });
