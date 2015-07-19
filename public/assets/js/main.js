@@ -308,7 +308,7 @@
       e.preventDefault();
       $('.file-item').each(function(index, file) {
         var data = $(file).data('data');
-        $(file).find('.filename')[0].disabled = true;
+        $(file).find('.filename')[0].readOnly = true;
 
         if (data && data.submit && !data.jqXHR && !data.files.error && data.submit()) {
           // waiting for things to happen
