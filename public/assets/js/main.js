@@ -307,8 +307,12 @@
     _startHandler: function(e) {
       e.preventDefault();
       $('.file-item').each(function(index, file) {
-        var data = $(file).data('data');
-        $(file).find('.filename')[0].readOnly = true;
+        var item = $(file);
+        var data = item.data('data');
+        var name = item.find('.filename')[0];
+
+        data.files[0].uploadName = name.value;
+        name.readOnly = true;
 
         if (data && data.submit && !data.jqXHR && !data.files.error && data.submit()) {
           // waiting for things to happen
