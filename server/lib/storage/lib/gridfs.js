@@ -4,6 +4,7 @@ var cryptostream = require('cryptostream');
 var detectMime = require('stream-mmmagic');
 var passStream = require('pass-stream');
 var mongoose = require('mongoose');
+var mimeType = require('mime-types');
 var Grid = require('gridfs-locking-stream');
 var Gifsicle = require('gifsicle-stream');
 var JpegTran = require('jpegtran');
@@ -103,7 +104,9 @@ module.exports = function (config) {
 
             // store file
             bcrypt.hash(file.deleteHash, 8, function (err, hash) {
-                file.content_type = mime.type;
+                file.content_type = mime.type === 'text/plain'
+                    ? mimeType.lookup(file.filename) || 'application/octet-stream'
+                    : mime.type;
                 file.metadata.deleteHash = hash;
                 self._gridfs.createWriteStream(file, function (err, writeStream) {
                     writeStream.on('error', function (err) {
