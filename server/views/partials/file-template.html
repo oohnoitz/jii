@@ -4,7 +4,10 @@
     <div class="row file-item">
       <div class="card">
         <div class="card-content">
-          <span class="card-title grey-text text-darken-4 truncate filename">{{name}}</span>
+          <div class="input-field">
+            <input type="text" name="filename" value="{{name}}" class="card-title grey-text text-darken-4 truncate filename">
+            <label class="active" for="filename">File Name</label>
+          </div>
           <p class="card-size">({{formatFileSize size}})</p>
         </div>
         <div class="card-action">

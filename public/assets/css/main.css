@@ -122,6 +122,12 @@ form p {
   cursor: pointer;
 }
 
+input.filename {
+  border-bottom: none !important;
+  box-shadow: none !important;
+  margin: 0;
+}
+
 footer.page-footer {
   margin: 0;
   padding-top: 0px;
