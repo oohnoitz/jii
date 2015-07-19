@@ -136,7 +136,7 @@
 
         if (!$.support.transition) {
           data.context
-            .find('.progress')
+            .find('.processing')
             .hide();
         }
       },
@@ -155,13 +155,22 @@
       progress: function(e, data) {
         if (data.context) {
           var percentage = Math.floor(data.loaded / data.total * 100);
+          if (percentage < 100) {
+            data.context
+              .find('.progress')
+              .attr('aria-valuenow', percentage)
+              .show()
+              .find('.determinate')
+              .css('width', percentage + '%');
+          } else {
+            data.context
+              .find('.progress')
+              .hide();
 
-          data.context
-            .find('.progress')
-            .attr('aria-valuenow', percentage)
-            .show()
-            .find('.determinate')
-            .css('width', percentage + '%');
+            data.context
+              .find('.processing')
+              .show();
+          }
 
           data.context
             .find('.file-remove')

@@ -85,6 +85,23 @@ form p {
   margin-top: 15px;
 }
 
+#files .progress {
+  display: none;
+  margin: 13px 0 13px 0 !important;
+}
+
+#files .processing {
+  display: none;
+  height: 30px;
+  text-align: right;
+}
+
+#files .preloader-wrapper {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+}
+
 #files .result {
   text-align: right;
 }
