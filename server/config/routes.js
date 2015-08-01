@@ -23,6 +23,16 @@ module.exports = function (config) {
         },
         {
             method: 'GET',
+            path: '/terms-of-service',
+            config: controller.base.terms
+        },
+        {
+            method: 'GET',
+            path: '/privacy-policy',
+            config: controller.base.privacy
+        },
+        {
+            method: 'GET',
             path: '/',
             config: controller.base.index
         }

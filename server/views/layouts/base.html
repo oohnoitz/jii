@@ -4,17 +4,27 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
     <title>{% block title %}{% endblock %}</title>
-    {% include "../includes/head.html" %}
+    {% include "../partials/header.html" %}
   </head>
   <body>
     <header>
       <nav class="white">
         <div class="nav-wrapper container">
-          <a id="logo-container" href="/" class="logo">{% block title %}{% endblock %}</a>
+          <a id="logo-container" href="/" class="logo">
+            {% block title %}{% endblock %}
+          </a>
         </div>
       </nav>
     </header>
-    {% block content %}{% endblock %}
-    {% include "../includes/foot.html" %}
+
+    <main>
+      <div class="parallax-container" id="index-banner">
+        <div class="parallax">
+          <img src="/assets/images/header.png" alt="じーっ">
+        </div>
+      </div>
+      {% block content %}{% endblock %}
+    </main>
+    {% include "../partials/footer.html" %}
   </body>
 </html>

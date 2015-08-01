@@ -1,0 +1,18 @@
+{% block footer %}
+  <footer class="page-footer">
+    <div class="footer-copyright">
+      <nav class="footer-container">
+        <ul>
+          <li><a class="grey-text text-lighten-4" href="/about">about us</a></li>
+          <li><a class="grey-text text-lighten-4" href="/terms-of-service">terms</a></li>
+          <li><a class="grey-text text-lighten-4" href="/privacy-policy">privacy policy</a></li>
+          <li class="right"><a class="grey-text text-lighten-4 right" href="{{jii.repository.url}}">jii {{jii.version}}</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+  <script src="/assets/bower/jquery/dist/jquery.min.js{{version.cache}}"></script>
+  {% for item in assets.js %}
+    <script src="/assets/{{item}}{{version.cache}}"></script>
+  {% endfor %}
+{% endblock %}

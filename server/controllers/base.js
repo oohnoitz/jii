@@ -12,7 +12,17 @@ module.exports = {
     },
     about: {
         handler: function (request, reply) {
-            reply.view('about', data);
+            reply.view('content/about', data);
+        }
+    },
+    terms: {
+        handler: function (request, reply) {
+            reply.view('content/terms', data);
+        }
+    },
+    privacy: {
+        handler: function (request, reply) {
+            reply.view('content/privacy', data);
         }
     }
 };

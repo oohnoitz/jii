@@ -149,3 +149,9 @@ footer.page-footer {
   margin: 0;
   padding-top: 0px;
 }
+
+nav.footer-container {
+  background-color: transparent;
+  height: 53px;
+  line-height: 53px;
+}
