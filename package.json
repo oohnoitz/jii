@@ -1,7 +1,7 @@
 {
   "name": "jii",
   "description": "a simple node.js file hosting server",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "author": "Hung Tran <oohnoitz@gmail.com>",
   "private": false,
   "repository": {
