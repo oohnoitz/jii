@@ -1,4 +1,5 @@
 {% block header %}
+  {% include './favicon.html' %}
   {% for item in assets.css %}
     <link rel="stylesheet" href="/assets/{{item}}{{version.cache}}"/>
   {% endfor %}
