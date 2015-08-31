@@ -15,7 +15,7 @@ exports.register = function(plugin, options, next) {
 
     plugin.route({
         method: 'GET',
-        path: '/{guid*}',
+        path: '/{guid}',
         handler: require('./handler').select
     });
 
