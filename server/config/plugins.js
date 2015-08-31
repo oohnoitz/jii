@@ -19,6 +19,12 @@ module.exports = function (server, config) {
             options: options.good
         },
         {
+            register: require('inert')
+        },
+        {
+            register: require('vision')
+        },
+        {
             register: require('hapi-assets'),
             options: options.assets
         },
