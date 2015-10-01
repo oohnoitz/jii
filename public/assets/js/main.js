@@ -131,7 +131,13 @@
           data.context
             .find('.download-link')
             .attr('href', file.url)
-            .show();
+            .css('display', 'inline');
+
+          data.context
+            .find('.download-copy')
+            .attr('data-clipboard-text', file.url)
+            .data('clipboard-text', file.url)
+            .css('display', 'inline');
         }
 
         if (!$.support.transition) {
@@ -413,7 +419,8 @@
 $(function() {
   'use strict';
 
-  //set up our file upload script
+  var clipboard = new Clipboard('.download-copy');
+
   $("#uploader").uploader({
     url: $("#uploader").data("path"),
     maxFileSize: $("#uploader").data("max-size")

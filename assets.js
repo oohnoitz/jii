@@ -8,6 +8,7 @@ module.exports = {
             'bower/blueimp-file-upload/js/jquery.iframe-transport.js',
             'bower/blueimp-file-upload/js/jquery.fileupload.js',
             'bower/blueimp-file-upload/js/jquery.fileupload-process.js',
+            'bower/clipboard/dist/clipboard.min.js',
             'js/jquery.fileupload-validate.js',
             'js/main.js'
         ],

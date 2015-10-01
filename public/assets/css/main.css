@@ -10,9 +10,9 @@ main {
 
 @font-face {
   font-family: 'Material Icons';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Material Icons'), local('MaterialIcons-Regular'), url(../font/MaterialIcons.woff2) format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  src: local('Material Icons'), local('MaterialIcons-Regular'), url(../font/MaterialIcons.woff2) format('woff2');
 }
 
 .material-icons {
@@ -61,7 +61,6 @@ nav .logo {
     position: absolute;
     top: 40%;
   }
-
   #index-banner .section {
     top: 10%;
   }
@@ -112,13 +111,26 @@ form p {
   text-align: right;
 }
 
+#files .download-copy,
 #files .download-link,
 #files .file-error {
   display: none;
 }
 
-#files .file-remove {
+#files .download-copy {
+  color: #ffab40;
+}
+
+#files .download-copy:hover {
+  color: #ffd8a6;
+}
+
+#files .file-remove,
+#files .download-copy {
   cursor: pointer;
+}
+
+#files .file-remove {
   opacity: 0.3;
 }
 

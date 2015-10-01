@@ -27,7 +27,7 @@
     "good": "^6.1.4",
     "good-console": "^5.0.2",
     "gridfs-locking-stream": "^1.0.5",
-    "hapi": "^9.0.3",
+    "hapi": "^9.3.1",
     "hapi-assets": "^0.3.0",
     "hapi-cache-buster": "^0.4.0",
     "inert": "^3.0.1",
