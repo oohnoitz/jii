@@ -105,7 +105,7 @@ module.exports = function (config) {
             // store file
             bcrypt.hash(file.deleteHash, 8, function (err, hash) {
                 file.content_type = mime.type === 'text/plain'
-                    ? mimeType.lookup(file.filename) || 'application/octet-stream'
+                    ? mimeType.lookup(file.filename) || 'text/plain'
                     : mime.type;
                 file.metadata.deleteHash = hash;
                 self._gridfs.createWriteStream(file, function (err, writeStream) {
