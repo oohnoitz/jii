@@ -24,6 +24,7 @@
 
   $.widget('jii.uploader', $.blueimp.fileupload, {
     options: {
+      pasteZone: $(document),
       title: document.title,
       autoUpload: false,
       maxChunkSize: 0,
@@ -49,9 +50,7 @@
         var $this = $(this),
           that = $this.data('jii-uploader'),
           options = that.options,
-          files = data.files,
-          queue = $('#browse-file-button'),
-          existingFiles = options.existingFiles || [];
+          files = data.files;
 
         data
           .process(function() {
@@ -384,6 +383,10 @@
           return (bytes / 1048576).toFixed(1) + ' MB';
         }
         return (bytes / 1024).toFixed(0) + ' KB';
+      });
+
+      Handlebars.registerHelper('getFileName', function(filename) {
+        return filename || (new Date()).getTime();
       });
     },
 
