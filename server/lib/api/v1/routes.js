@@ -2,6 +2,11 @@ module.exports = function (config) {
     return [
         {
             method: 'DELETE',
+            path: '/api/v1/delete/{guid}/{hash}',
+            handler: require('./handler').remove
+        },
+        {
+            method: 'DELETE',
             path: '/api/v1/upload/{guid}/{hash}',
             handler: require('./handler').remove
         },
@@ -16,6 +21,11 @@ module.exports = function (config) {
                     parse: true
                 }
             }
+        },
+        {
+            method: 'GET',
+            path: '/api/v1/delete/{guid}/{hash}',
+            handler: require('./handler').remove
         },
         {
             method: 'GET',

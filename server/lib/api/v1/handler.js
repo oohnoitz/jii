@@ -131,6 +131,7 @@ var saveFile = function (self, data, fileStream, reply) {
                 delete file.aliases;
                 file.metadata.deleteHash = data.deleteHash;
                 file.url = self.config.app.uri + (file.metadata.secure ? '/s/' : '/') + file._id + tools.getFileExtension(file.filename);
+                file.deleteUrl = self.config.app.uri + '/api/v1/delete/' + file._id + '/' + data.deleteHash;
 
                 if (self.config.clamav.enabled === true) {
                     self.fs.read(file._id, function (err, dataStream) {
