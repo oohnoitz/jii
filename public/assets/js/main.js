@@ -75,6 +75,8 @@
                   data.submit();
                 }
 
+                that._toggleUploadButton();
+
                 var file = data.files[0];
                 if ('error' in file) {
                   data.context
@@ -116,6 +118,8 @@
             error: 'Empty Upload Result',
             message: 'No upload result response found.'
           };
+
+        that._toggleUploadButton();
 
         if ('error' in file) {
           data.context
@@ -234,6 +238,21 @@
 
     _renderUpload: function(files) {
       return this._renderTemplate(this.options.uploadTemplate, files);
+    },
+
+    _toggleUploadButton: function() {
+      var count = 0;
+
+      $('.file-item').each(function(index, file) {
+        var item = $(file);
+        var data = item.data('data');
+
+        if (!data.jqXHR) {
+          count++;
+        }
+      });
+
+      return $('#upload-button').attr('disabled', count ? false : true);
     },
 
     _reflow: function(node) {
@@ -404,6 +423,7 @@
           'click .file-remove': this._cancelHandler
         }
       );
+      this._toggleUploadButton();
     },
 
     _initSpecialOptions: function() {
