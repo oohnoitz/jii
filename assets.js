@@ -1,31 +1,22 @@
-// assets to be used by the 'hapi-assets' module based on process.env.NODE_ENV
-module.exports = {
-    development: {
-        js: [
-            'bower/materialize/dist/js/materialize.min.js',
-            'bower/handlebars/handlebars.min.js',
-            'bower/blueimp-file-upload/js/vendor/jquery.ui.widget.js',
-            'bower/blueimp-file-upload/js/jquery.iframe-transport.js',
-            'bower/blueimp-file-upload/js/jquery.fileupload.js',
-            'bower/blueimp-file-upload/js/jquery.fileupload-process.js',
-            'bower/clipboard/dist/clipboard.min.js',
-            'js/jquery.fileupload-validate.js',
-            'js/main.js'
-        ],
-        css: [
-            'bower/materialize/dist/css/materialize.min.css',
-            'css/main.css'
-        ],
-        font: [
-            'bower/materialize/font/**'
-        ]
-    },
-    production: {
-        js: [
-            'js/app.js'
-        ],
-        css: [
-            'css/app.css'
-        ]
-    }
-};
+export default {
+  js: [
+    'static/assets/bower/jquery/dist/jquery.min.js',
+    'static/assets/bower/materialize/dist/js/materialize.min.js',
+    'static/assets/bower/handlebars/handlebars.min.js',
+    'static/assets/bower/blueimp-file-upload/js/vendor/jquery.ui.widget.js',
+    'static/assets/bower/blueimp-file-upload/js/jquery.iframe-transport.js',
+    'static/assets/bower/blueimp-file-upload/js/jquery.fileupload.js',
+    'static/assets/bower/blueimp-file-upload/js/jquery.fileupload-process.js',
+    'static/assets/bower/clipboard/dist/clipboard.min.js',
+    'static/assets/js/jquery.fileupload-validate.js',
+    'static/assets/js/main.js'
+  ],
+  css: [
+    'static/assets/bower/materialize/dist/css/materialize.min.css',
+    'static/assets/css/main.css'
+  ],
+  font: [
+    'static/assets/bower/materialize/font/**',
+    'static/assets/font/MaterialIcons.woff2'
+  ]
+}

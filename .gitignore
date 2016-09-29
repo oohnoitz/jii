@@ -1,17 +1,8 @@
 !.gitkeep
-lib-cov
-*.seed
-*.log
-*.csv
-*.dat
-*.out
-*.pid
-*.gz
 
-public/assets/bower/*
-tmp
-pids
-results
-npm-debug.log
+dist
 node_modules
+static/assets/bower/*
+
+npm-debug.log
 config.js
