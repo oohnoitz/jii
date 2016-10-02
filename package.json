@@ -43,6 +43,7 @@
     "winston": "2.2.0"
   },
   "devDependencies": {
+    "ava": "^0.16.0",
     "babel-cli": "^6.16.0",
     "babel-core": "^6.16.0",
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -64,7 +65,8 @@
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.5",
     "gulp-zopfli": "^1.0.0",
-    "run-sequence": "^1.2.2"
+    "run-sequence": "^1.2.2",
+    "sinon": "^1.17.6"
   },
   "babel": {
     "presets": [
@@ -74,5 +76,8 @@
     "plugins": [
       "add-module-exports"
     ]
+  },
+  "ava": {
+    "require": "babel-core/register"
   }
 }

@@ -10,8 +10,7 @@ const plugins = gulpLoadPlugins()
 const assets = require('./assets')
 
 const paths = {
-  js: ['./**/*.js', '!coverage/**', '!dist/**', '!node_modules/**', '!static/**'],
-  tests: './**/__tests__/*.js',
+  js: ['./**/*.js', '!coverage/**', '!dist/**', '!node_modules/**', '!static/**', '!test/**'],
 }
 
 gulp.task('clean', () =>
