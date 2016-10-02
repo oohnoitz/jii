@@ -66,6 +66,7 @@
     "gulp-uglify": "^2.0.0",
     "gulp-util": "^3.0.5",
     "gulp-zopfli": "^1.0.0",
+    "nyc": "^8.3.0",
     "run-sequence": "^1.2.2",
     "sinon": "^1.17.6"
   },
