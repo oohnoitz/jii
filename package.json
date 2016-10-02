@@ -13,8 +13,9 @@
     "node": "6.x"
   },
   "scripts": {
-    "start": "node server.js",
-    "postinstall": "bower install"
+    "start": "node dist/server.js",
+    "postinstall": "bower install",
+    "test": "nyc ava"
   },
   "dependencies": {
     "bcrypt": "0.8.7",
