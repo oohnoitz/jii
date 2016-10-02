@@ -12,3 +12,9 @@ addons:
 
 env:
   - CXX=g++-4.8
+
+services:
+  - mongodb
+
+before_script:
+  - cp config.js.example config.js
