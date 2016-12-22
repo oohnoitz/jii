@@ -5,7 +5,6 @@ import del from 'del'
 import runSequence from 'run-sequence'
 import babel from 'babel-core/register'
 
-
 const plugins = gulpLoadPlugins()
 const assets = require('./assets')
 

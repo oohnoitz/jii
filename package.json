@@ -1,6 +1,6 @@
 {
   "name": "jii",
-  "description": "a simple node.js file hosting server",
+  "description": "a node.js file hosting server",
   "version": "1.0.0",
   "author": "Hung Tran <hung@0x0.ninja>",
   "private": false,

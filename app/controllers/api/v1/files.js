@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import multiparty from 'multiparty'
-import GridFS from '../../../../lib/gridfs'
+import GridFS from '../../../../lib/storage/gridfs'
 import utils from '../../../../lib/utils'
 
 const storage = new GridFS()

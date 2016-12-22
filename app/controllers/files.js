@@ -1,6 +1,6 @@
 import cryptostream from 'cryptostream'
 import passStream from 'pass-stream'
-import GridFS from '../../lib/gridfs'
+import GridFS from '../../lib/storage/gridfs'
 import utils from '../../lib/utils'
 
 const storage = new GridFS()
