@@ -1,9 +1,9 @@
 import cryptostream from 'cryptostream'
 import passStream from 'pass-stream'
-import GridFS from '../../lib/storage/gridfs'
+import Storage from '../../lib/storage'
 import utils from '../../lib/utils'
 
-const storage = new GridFS()
+const storage = new Storage()
 
 const serveFile = (req, res) => {
   const guid = req.params.guid.split('.')[0]

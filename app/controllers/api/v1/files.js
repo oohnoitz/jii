@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt'
 import multiparty from 'multiparty'
-import GridFS from '../../../../lib/storage/gridfs'
+import Storage from '../../../../lib/storage'
 import utils from '../../../../lib/utils'
 
-const storage = new GridFS()
+const storage = new Storage()
 
 const select = (req, res) => {
   const guid = req.params.guid ? req.params.guid.split('.')[0] : null

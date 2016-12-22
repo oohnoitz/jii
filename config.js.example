@@ -11,6 +11,9 @@ export default {
     data: 'jii'
   },
   storage: {
+    system: {
+      type: 'gridfs',
+    },
     maxUploadSize: 52428800,
     imageOptimization: true,
     validFileExtensions: [
