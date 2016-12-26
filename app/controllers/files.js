@@ -18,7 +18,7 @@ const serveFile = (req, res) => {
 
     storage.read(guid, (err, data) => {
       if (err) {
-        res.status(500).json({
+        return res.status(500).json({
           statusCode: 500,
           error: 'Internal Server Error',
           message: 'We encountered an unexpected error. Please try again later.'
