@@ -34,10 +34,10 @@ gulp.task('assets', () => {
     .pipe(gulp.dest('dist/public/assets/js'))
 
   gulp.src(assets.font)
-    .pipe(plugins.newer('dist/public/assets/font'))
-    .pipe(gulp.dest('dist/public/assets/font'))
+    .pipe(plugins.newer('dist/public/assets/fonts'))
+    .pipe(gulp.dest('dist/public/assets/fonts'))
     .pipe(plugins.zopfli())
-    .pipe(gulp.dest('dist/public/assets/font'))
+    .pipe(gulp.dest('dist/public/assets/fonts'))
 
   gulp.src('static/assets/images/*')
     .pipe(plugins.newer('dist/public/assets/images'))

@@ -16,7 +16,7 @@ export default {
     'static/assets/css/main.css'
   ],
   font: [
-    'static/assets/bower/materialize/font/**',
+    'static/assets/bower/materialize/fonts/**/*',
     'static/assets/font/MaterialIcons.woff2'
   ]
 }
