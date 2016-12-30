@@ -1,0 +1,19 @@
+block footer
+  footer.page-footer
+    .footer-copyright
+      nav.footer-container
+        ul
+          li
+            a.grey-text.text-lighten-4(href="/about")
+              | about us
+          li
+            a.grey-text.text-lighten-4(href="/terms-of-service")
+              | terms
+          li
+            a.grey-text.text-lighten-4(href="/privacy-policy")
+              | privacy policy
+          li.right
+            a.grey-text.text-lighten-4(href=jii.repository.url)
+              | じーっ #{jii.version}
+
+  script(src=`/assets/js/app.js?v=${jii.version}`)

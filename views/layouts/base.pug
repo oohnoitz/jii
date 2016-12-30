@@ -1,0 +1,23 @@
+doctype html
+html
+  head
+    meta(http-equiv="Content-Type", content="text/html; charset=UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no")
+    block title
+      title= cfg.app.name
+    include ../partials/header
+  body
+    header
+      nav.white
+        .container.nav-wrapper
+          a#logo-container.logo(href="/")
+            img.jii-logo(src="/assets/images/jii-logo.png", width="48", height="48", alt=cfg.app.name)
+            = cfg.app.name
+
+    main
+      #index-banner.parallax-container
+        .parallax
+          img(src="/assets/images/header.png", alt=cfg.app.name)
+      block content
+
+    include ../partials/footer

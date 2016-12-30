@@ -1,0 +1,78 @@
+script#upload-template(type="text/x-handlebars-template").
+  {{#each files}}
+  <div class="row file-item">
+    <div class="card">
+      <div class="card-content">
+        <div class="input-field">
+          <input type="text" value="{{getFileName name}}" class="card-title grey-text text-darken-4 truncate filename">
+          <label class="active" for="filename">File Name</label>
+        </div>
+        <p class="card-size">({{formatFileSize size}})</p>
+      </div>
+      <div class="card-action">
+        <div class="progress">
+          <div class="determinate" style="width: 0%"></div>
+        </div>
+
+        <div class="processing">
+          <div class="preloader-wrapper active">
+            <div class="spinner-layer spinner-blue">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+
+            <div class="spinner-layer spinner-red">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+
+            <div class="spinner-layer spinner-yellow">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+
+            <div class="spinner-layer spinner-green">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div><div class="gap-patch">
+                <div class="circle"></div>
+              </div><div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="result">
+          <span class="file-error red-text text-darken-2"></span>
+          <span class="file-remove">
+            <i class="material-icons">clear</i>
+          </span>
+          <span class="file-download">
+            <span class="download-copy" title="Copy to Clipboard">
+              <i class="material-icons">launch</i>
+            </span>
+            <a href="#" class="download-link" target="_blank">
+              <i class="material-icons">file_download</i>
+            </a>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/each}}

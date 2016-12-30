@@ -1,0 +1,13 @@
+extends layouts/base
+
+block content
+  form#uploader(action="/api/v1/upload", method="POST", enctype="multipart/form-data")&attributes({'data-path': '/api/v1/upload', 'data-max-size': cfg.storage.maxUploadSize})
+    .container
+      .row
+        #browse-button.waves-effect.waves-light.btn-large
+          | Browse
+          input#browse-file-button(name="file", type="file", multiple=true)
+        button#upload-button.waves-effect.waves-light.btn-large
+          | Upload
+      #files.data
+  include partials/upload
