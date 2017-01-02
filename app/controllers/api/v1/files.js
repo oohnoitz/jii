@@ -8,7 +8,7 @@ const storage = new Storage()
 const select = (req, res) => {
   const guid = req.params.guid ? req.params.guid.split('.')[0] : null
 
-  .find(guid, (err, file) => {
+  storage.find(guid, (err, file) => {
     if (err || file === null) {
       return res.status(404).json({
         statusCode: 404,
@@ -72,9 +72,9 @@ const remove = (req, res) => {
       })
     }
 
-    bcrypt.compare(hash, file.metadata.deleteHash, (err, res) => {
-      if (res) {
-        return storage.delete(file, (err, res) => {
+    bcrypt.compare(hash, file.metadata.deleteHash, (err, match) => {
+      if (match) {
+        return storage.delete(file, (err, data) => {
           return res.status(200).json({
             statusCode: 200,
             message: 'The file has been deleted.',

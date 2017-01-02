@@ -5,6 +5,10 @@ const routes = express.Router()
 
 import apiFilesController from './controllers/api/v1/files'
 routes.post('/api/v1/upload', apiFilesController.create)
+routes.delete('/api/v1/upload/:guid/:hash', apiFilesController.remove)
+routes.delete('/api/v1/delete/:guid/:hash', apiFilesController.remove)
+routes.get('/api/v1/delete/:guid/:hash', apiFilesController.remove)
+routes.get('/api/v1/upload/:guid', apiFilesController.select)
 
 import pagesController from './controllers/pages'
 routes.get('/about', pagesController.about)
