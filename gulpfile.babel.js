@@ -26,14 +26,14 @@ gulp.task('assets', () => {
     .pipe(gulp.dest('dist/public/assets/css'))
 
   gulp.src(assets.js)
-    .pipe(plugins.newer('dist/public/assets/js/app.js'))
+    .pipe(plugins.newer('dist/public/assets/js'))
     .pipe(plugins.concat('app.js'))
     .pipe(plugins.uglify())
     .pipe(gulp.dest('dist/public/assets/js'))
     .pipe(plugins.zopfli())
     .pipe(gulp.dest('dist/public/assets/js'))
 
-  gulp.src(assets.font)
+  gulp.src(assets.fonts)
     .pipe(plugins.newer('dist/public/assets/fonts'))
     .pipe(gulp.dest('dist/public/assets/fonts'))
     .pipe(plugins.zopfli())
@@ -43,12 +43,6 @@ gulp.task('assets', () => {
     .pipe(plugins.newer('dist/public/assets/images'))
     .pipe(plugins.imagemin())
     .pipe(gulp.dest('dist/public/assets/images'))
-})
-
-gulp.task('copy', () => {
-  // gulp.src(['static/assets/font/**/*'])
-  //   .pipe(plugins.newer('dist/public/assets/font'))
-  //   .pipe(gulp.dest('dist/public/assets/font'))
 })
 
 gulp.task('babel', () => {
@@ -72,8 +66,9 @@ gulp.task('nodemon', ['copy', 'assets', 'babel'], () =>
     script: path.join('dist', 'server.js'),
     ext: 'js',
     ignore: ['node_modules/**/*.js', 'dist/**/*.js'],
-    tasks: ['copy', 'assets', 'babel'],
+    tasks: ['assets', 'babel'],
   })
 )
 
 gulp.task('serve', ['clean'], () => runSequence('nodemon'))
+gulp.task('build', cb => runSequence('clean', ['assets', 'babel'], cb))
