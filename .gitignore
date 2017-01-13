@@ -4,7 +4,6 @@
 coverage
 dist
 node_modules
-static/assets/bower/*
 
 npm-debug.log
 config.js
