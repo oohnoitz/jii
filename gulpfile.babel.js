@@ -61,7 +61,7 @@ gulp.task('babel', () => {
     .pipe(gulp.dest('dist'))
 })
 
-gulp.task('nodemon', ['copy', 'assets', 'babel'], () =>
+gulp.task('nodemon', ['assets', 'babel'], () =>
   plugins.nodemon({
     script: path.join('dist', 'server.js'),
     ext: 'js',
