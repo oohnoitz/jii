@@ -43,6 +43,10 @@ gulp.task('assets', () => {
     .pipe(plugins.newer('dist/public/assets/images'))
     .pipe(plugins.imagemin())
     .pipe(gulp.dest('dist/public/assets/images'))
+
+  gulp.src('static/*')
+    .pipe(plugins.newer('dist/public'))
+    .pipe(gulp.dest('dist/public'))
 })
 
 gulp.task('babel', () => {
