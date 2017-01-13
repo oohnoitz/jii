@@ -29,7 +29,7 @@ const create = (req, res) => {
   let fileUpload = false
 
   form.on('error', (error) => {
-    return res.status(400).json({})
+    return res.status(400).json(error)
   })
 
   form.on('field', (field, value) => {
@@ -38,7 +38,7 @@ const create = (req, res) => {
 
   form.on('part', (part) => {
     part.on('error', (error) => {
-      return res.status(400).json({})
+      return res.status(400).json(error)
     })
 
     if (!part.filename || part.name !== 'file') {
@@ -48,7 +48,7 @@ const create = (req, res) => {
     }
 
     const fileData = storage.new({ ...data, name: part.filename, headers: part.headers }, 'file')
-    storage.processUpload(fileData, part, (err, file) => {
+    storage.processUpload(fileData, part, (error, file) => {
       if (error) {
         return res.status(409).json(error)
       }
