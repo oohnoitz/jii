@@ -50,7 +50,10 @@ const create = (req, res) => {
     const fileData = storage.new({ ...data, name: part.filename, headers: part.headers }, 'file')
     storage.processUpload(fileData, part, (error, file) => {
       if (error) {
-        return res.status(409).json(error)
+        return res.status(409).json({
+          statusCode: 409,
+          error,
+        })
       }
 
       return res.json(file)

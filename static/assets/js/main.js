@@ -152,12 +152,19 @@
 
       // callback for failed uploads
       fail: function(e, data) {
+        var file = {
+          error: data.errorThrown,
+          message: data.jqXHR.responseJSON.error
+        }
+
         data.context
-          .each(function(index) {
-            var file = data.files[index];
-            file.error = file.error || data.errorThrown || true;
-            console.log(file.error);
-          });
+          .find('.file-error')
+          .text(file.message)
+          .show();
+
+        data.context
+          .find('.processing')
+          .hide();
       },
 
       // callback for upload progress events

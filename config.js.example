@@ -3,12 +3,12 @@ export default {
     name: 'じーっ',
     host: '0.0.0.0',
     port: 3000,
-    uri: 'http://localhost:3000'
+    uri: 'http://localhost:3000',
   },
   db: {
     host: '127.0.0.1',
     port: 27017,
-    data: 'jii'
+    data: 'jii',
   },
   storage: {
     system: {
@@ -21,7 +21,15 @@ export default {
       '.tar.bz', '.tar.bz2',
       '.tar.xz',
       '.user.js'
-    ]
+    ],
+    blacklist: {
+      fileExtensions: [
+
+      ],
+      mimeTypes: [
+
+      ],
+    },
   },
   clamav: {
     host: '127.0.0.1',
