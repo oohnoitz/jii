@@ -13,6 +13,7 @@
     "node": "6.x"
   },
   "scripts": {
+    "build": "gulp build",
     "start": "node dist/server.js",
     "test": "nyc ava"
   },

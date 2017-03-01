@@ -1,0 +1,36 @@
+export default {
+  app: {
+    name: 'じーっ',
+    host: '0.0.0.0',
+    port: 3000,
+    uri: 'http://localhost:3000',
+  },
+  db: 'postgres://postgres@localhost/jii',
+  storage: {
+    system: {
+      type: 'diskfs',
+      path: '/tmp',
+    },
+    maxUploadSize: 52428800,
+    imageOptimization: true,
+    validFileExtensions: [
+      '.tar.gz',
+      '.tar.bz', '.tar.bz2',
+      '.tar.xz',
+      '.user.js'
+    ],
+    blacklist: {
+      fileExtensions: [
+
+      ],
+      mimeTypes: [
+
+      ],
+    },
+  },
+  clamav: {
+    host: '127.0.0.1',
+    port: 3310,
+    enabled: false
+  },
+}

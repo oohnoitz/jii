@@ -1,7 +1,7 @@
 じーっ
 ====
 
-**じーっ** is a simple file hosting server written in Node.js and utilizes MongoDB's GridFS to store files.
+**じーっ** is a file hosting server written in Node.js.
 
 ### Install
 
@@ -13,10 +13,18 @@ $ npm install
 
 ### Configure
 
-You will need to copy the example config.json file and modify it with your own settings.
+You will need to copy one of the example config.json files and modify it with your own settings.
+
+**GridFS (with MongoDB)**
 
 ```
-$ cp config.js.example config.js
+$ cp config.js.example.gridfs config.js
+```
+
+**DiskFS (with Postgres and File System)**
+
+```
+$ cp config.js.example.diskfs config.js
 ```
 
 ### Running
@@ -24,5 +32,6 @@ $ cp config.js.example config.js
 To start the servers, run the following command:
 
 ```
-$ node server.js
+$ npm run build
+$ npm start
 ```
