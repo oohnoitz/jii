@@ -27,9 +27,13 @@ const create = (req, res) => {
   const form = new multiparty.Form()
   const data = {}
   let fileUpload = false
+  let handleErr = true
 
   form.on('error', (error) => {
-    return res.status(400).json(error)
+    if (handleErr) {
+      handleErr = false
+      return res.status(400).json(error)
+    }
   })
 
   form.on('field', (field, value) => {
@@ -37,6 +41,13 @@ const create = (req, res) => {
   })
 
   form.on('part', (part) => {
+    part.on('error', (error) => {
+      if (handleErr) {
+        handleErr = false
+        return res.status(400).json(error)
+      }
+    })
+
     if (!part.filename || part.name !== 'file') {
       part.resume()
     } else {
