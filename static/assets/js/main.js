@@ -453,6 +453,6 @@ $(function() {
 
   $("#uploader").uploader({
     url: $("#uploader").data("path"),
-    maxFileSize: $("#uploader").data("max-size")
+    maxFileSize: $("#uploader").data("max-size"),
   });
 });

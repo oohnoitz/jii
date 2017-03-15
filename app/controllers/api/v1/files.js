@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt'
 import multiparty from 'multiparty'
 import Storage from '../../../../lib/storage'
 import utils from '../../../../lib/utils'
+import config from '../../../../config'
 
 const storage = new Storage()
 
@@ -24,6 +25,11 @@ const select = (req, res) => {
 }
 
 const create = (req, res) => {
+  const { api } = config
+  if (api.requireAuth && !api.keys.includes(req.headers.authorization)) {
+    return res.status(401).json({ statusCode: 401, error: 'You do not have access to upload a file.' })
+  }
+
   const form = new multiparty.Form()
   const data = {}
   let fileUpload = false
