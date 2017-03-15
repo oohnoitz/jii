@@ -13,6 +13,8 @@ export default {
     system: {
       type: 'diskfs',
       path: '/tmp',
+      algo: 'sha512',
+      version: 1,
     },
     maxUploadSize: 52428800,
     imageOptimization: true,
