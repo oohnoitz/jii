@@ -38,7 +38,7 @@ const serveFile = (req, res) => {
         'Content-Disposition': utils.generateContentDisposition(file),
         'Content-Length': file.length,
         'Content-Type': (file.contentType || 'application/octet-stream'),
-        'ETag': file.md5 || file.sha256,
+        'ETag': file.md5 || file.hash,
         'Last-Modified': file.uploadDate.toUTCString(),
       })
 
