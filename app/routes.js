@@ -18,7 +18,7 @@ if (config.web.ui) {
   routes.get('/privacy-policy', pagesController.privacy)
   routes.get('/', pagesController.index)
 } else {
-  routes.get('/', (req, res) => res.end())
+  routes.get('/', pagesController.blank)
 }
 
 import filesController from './controllers/files'

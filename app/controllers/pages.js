@@ -1,5 +1,9 @@
 import jiiData from '../../lib/jii'
 
+const blank = (req, res) => {
+  res.render('blank', jiiData)
+}
+
 const index = (req, res) => {
   res.render('index', jiiData)
 }
@@ -17,6 +21,7 @@ const privacy = (req, res) => {
 }
 
 export default {
+  blank,
   index,
   about,
   terms,
