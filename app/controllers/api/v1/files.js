@@ -2,7 +2,6 @@ import bcrypt from 'bcrypt'
 import multiparty from 'multiparty'
 import Storage from '../../../../lib/storage'
 import utils from '../../../../lib/utils'
-import config from '../../../../config'
 
 const storage = new Storage()
 
@@ -25,65 +24,65 @@ const select = (req, res) => {
 }
 
 const create = (req, res) => {
-  const { api } = config
-  if (api.requireAuth && !api.keys.includes(req.headers.authorization)) {
-    return res.status(401).json({ statusCode: 401, error: 'You do not have access to upload a file.' })
-  }
-
-  const form = new multiparty.Form()
-  const data = {}
-  let fileUpload = false
-  let handleErr = true
-
-  form.on('error', (error) => {
-    if (handleErr) {
-      handleErr = false
-      return res.status(400).json(error)
+  storage.permissions(req.headers.authorization || null, (error) => {
+    if (error) {
+      return res.status(401).json({ statusCode: 401, error: error.message})
     }
-  })
 
-  form.on('field', (field, value) => {
-    data[field] = value
-  })
+    const form = new multiparty.Form()
+    const data = {}
+    let fileUpload = false
+    let handleErr = true
 
-  form.on('part', (part) => {
-    part.on('error', (error) => {
+    form.on('error', (error) => {
       if (handleErr) {
         handleErr = false
         return res.status(400).json(error)
       }
     })
 
-    if (!part.filename || part.name !== 'file') {
-      part.resume()
-    } else {
-      fileUpload = true
-    }
+    form.on('field', (field, value) => {
+      data[field] = value
+    })
 
-    const fileData = storage.new({ ...data, name: part.filename, headers: part.headers }, 'file')
-    storage.processUpload(fileData, part, (error, file) => {
-      if (error) {
-        return res.status(409).json({
-          statusCode: 409,
-          error,
-        })
+    form.on('part', (part) => {
+      part.on('error', (error) => {
+        if (handleErr) {
+          handleErr = false
+          return res.status(400).json(error)
+        }
+      })
+
+      if (!part.filename || part.name !== 'file') {
+        part.resume()
+      } else {
+        fileUpload = true
       }
 
-      return res.json(file)
+      const fileData = storage.new({ ...data, name: part.filename, headers: part.headers }, 'file')
+      storage.processUpload(fileData, part, (error, file) => {
+        if (error) {
+          return res.status(409).json({
+            statusCode: 409,
+            error,
+          })
+        }
+
+        return res.json(file)
+      })
     })
-  })
 
-  form.on('close', () => {
-    // TODO: handle close emitter correctly
-    // return res.status(400).json({})
-  })
+    form.on('close', () => {
+      // TODO: handle close emitter correctly
+      // return res.status(400).json({})
+    })
 
-  form.parse(req)
+    form.parse(req)
+  })
 }
 
 const remove = (req, res) => {
-  const { guid = null, hash = null } = req.params
-
+  const { guid = null, hash = null } = req.paramsrub
   storage.find(guid, (err, file) => {
     if (err || file === null) {
       return res.status(404).json({
