@@ -10,9 +10,6 @@ export default {
   },
   api: {
     requireAuth: false,
-    keys: [
-
-    ],
   },
   db: 'postgres://postgres@localhost/jii',
   storage: {
