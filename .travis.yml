@@ -1,8 +1,8 @@
 language: node_js
 
 node_js:
-  - "6"
-  - "7"
+  - 6
+  - 7
 
 addons:
   apt:
@@ -12,10 +12,15 @@ addons:
       - g++-4.8
 
 env:
-  - CXX=g++-4.8
+  - CXX=g++-4.8 STORAGE_DRIVER=diskfs
+  - CXX=g++-4.8 STORAGE_DRIVER=gridfs
+
+matrix:
+  fast_finish: true
 
 services:
   - mongodb
+  - postgresql
 
 before_script:
-  - cp config.js.example config.js
+  - cp config.js.example.${STORAGE_DRIVER} config.js
