@@ -82,7 +82,7 @@ const create = (req, res) => {
 }
 
 const remove = (req, res) => {
-  const { guid = null, hash = null } = req.paramsrub
+  const { guid = null, hash = null } = req.params
   storage.find(guid, (err, file) => {
     if (err || file === null) {
       return res.status(404).json({
