@@ -44,7 +44,6 @@
     "optipng": "1.1.0",
     "pass-stream": "1.0.0",
     "pg": "7.4.1",
-    "pg-native": "2.2.0",
     "pug": "^2.0.0-beta6",
     "random-key": "0.3.2",
     "shortid": "2.2.8",
