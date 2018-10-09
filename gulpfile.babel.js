@@ -22,21 +22,15 @@ gulp.task('assets', () => {
     .pipe(plugins.concat('app.css'))
     .pipe(plugins.minifyCss())
     .pipe(gulp.dest('dist/public/assets/css'))
-    .pipe(plugins.zopfli())
-    .pipe(gulp.dest('dist/public/assets/css'))
 
   gulp.src(assets.js)
     .pipe(plugins.newer('dist/public/assets/js'))
     .pipe(plugins.concat('app.js'))
     .pipe(plugins.uglify())
     .pipe(gulp.dest('dist/public/assets/js'))
-    .pipe(plugins.zopfli())
-    .pipe(gulp.dest('dist/public/assets/js'))
 
   gulp.src(assets.fonts)
     .pipe(plugins.newer('dist/public/assets/fonts'))
-    .pipe(gulp.dest('dist/public/assets/fonts'))
-    .pipe(plugins.zopfli())
     .pipe(gulp.dest('dist/public/assets/fonts'))
 
   gulp.src('static/assets/images/*')
