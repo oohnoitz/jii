@@ -10,7 +10,7 @@
   },
   "main": "server.js",
   "engines": {
-    "node": "6.x"
+    "node": "10.x"
   },
   "scripts": {
     "build": "gulp build",
@@ -18,7 +18,7 @@
     "test": "nyc ava"
   },
   "dependencies": {
-    "bcrypt": "1.0.3",
+    "bcrypt": "3.0.1",
     "blueimp-file-upload": "9.19.2",
     "body-parser": "1.18.2",
     "clamav.js": "0.12.0",
@@ -47,7 +47,7 @@
     "pug": "^2.0.0-beta6",
     "random-key": "0.3.2",
     "shortid": "2.2.8",
-    "stream-mmmagic": "2.0.0",
+    "stream-mmmagic": "2.1.0",
     "winston": "2.4.0"
   },
   "devDependencies": {
@@ -71,7 +71,6 @@
     "gulp-sourcemaps": "^2.6.3",
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.5",
-    "gulp-zopfli": "^1.0.0",
     "nyc": "^11.4.1",
     "run-sequence": "^2.2.1",
     "sinon": "^4.1.5"
