@@ -10,7 +10,7 @@
   },
   "main": "server.js",
   "engines": {
-    "node": "10.x"
+    "node": ">=8.x"
   },
   "scripts": {
     "build": "gulp build",
